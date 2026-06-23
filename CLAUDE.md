@@ -32,16 +32,20 @@ AI-Daily-Briefing/
 ## 自动化流水线
 
 ```
-每天晚上 9:07（CronCreate 触发）
-  ├── 1. WebSearch × N → 生成 daily-briefings/YYYY-MM-DD.md
-  ├── 2. python validate.py → 校验链接/域名/重复
-  ├── 3. python build_site.py → 重建 index.html
-  └── 4. git add → commit → push → GitHub Pages 自动更新
+每天晚上 10:30 — 初版
+  ├── 搜索 → 生成 → 校验 → 构建 → 推送
+  └── 覆盖当天 0:00-22:30 的内容
+
+次日早上 8:07 — 补充
+  ├── 重搜昨天的日期
+  ├── 找出初版没收录的新文章（按 URL 去重）
+  ├── 在文件末尾追加 📎 补充区块
+  └── 校验 → 构建 → 推送
 ```
 
 ## 运行方式
 
-- **自动**：CronCreate 每天晚上 9:07 触发完整流水线
+- **自动**：CronCreate 每天晚上 22:30 生成初版 + 次日早上 8:30 补充
 - **手动**：说"生成今天的 AI 日报"
 - **本地查看**：双击 `view.bat` 或在浏览器打开 `index.html`
 - **远程查看**：https://leoljq.github.io/AI-Daily-Briefing/
