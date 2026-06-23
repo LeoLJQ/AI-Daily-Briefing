@@ -32,9 +32,9 @@ AI-Daily-Briefing/
 ## 自动化流水线
 
 ```
-每天早上 8:07（CronCreate 触发）
-  ├── 1. WebSearch × 6（科研/产品/融资 × 国际/国内）
-  ├── 2. 生成 daily-briefings/YYYY-MM-DD.md
+每天晚上 9:07（CronCreate 触发）
+  ├── 1. WebSearch × N → 生成 daily-briefings/YYYY-MM-DD.md
+  ├── 2. python validate.py → 校验链接/域名/重复
   ├── 3. python build_site.py → 重建 index.html
   └── 4. git add → commit → push → GitHub Pages 自动更新
 ```

@@ -576,6 +576,18 @@ window.addEventListener('hashchange', () => {
 
 def build():
     """Main build function."""
+    # 先跑校验
+    import subprocess
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "validate.py")],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        print(result.stdout)
+        print(result.stderr)
+        print("WARNING: Validation found issues. Run python validate.py for details.")
+        print("Continuing with build, but please review.")
+
     BRIEFINGS_DIR.mkdir(parents=True, exist_ok=True)
 
     # Read all markdown files
