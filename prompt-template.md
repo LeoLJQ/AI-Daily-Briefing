@@ -33,19 +33,33 @@
 ### 7. 精选文章 — 英文深度源
 搜索："MIT Technology Review AI analysis June 2026"
 搜索："Stratechery Ben Thompson AI June 2026"
-搜索："Nature Science AI research highlight June 2026"
+搜索："Nature Science AI machine learning research June 2026"
+搜索："The Verge Wired AI in-depth June 2026"
 关注：深度分析、行业趋势、长文评论，而非新闻快讯。每条需要简短摘要说明为何值得读。
+最终挑选 5-8 篇最重要的。
 
-### 8. 精选文章 — 中文深度源（公众号/网站）
-搜索："site:jiqizhixin.com 深度 2026年6月"
-搜索："site:qbitai.com 人工智能 2026年6月"
-搜索："site:geekpark.net AI 2026年6月"
+### 8. 精选文章 — 中文深度源（全面搜索，精选展示）
+
+逐个搜索以下 9 个来源，确保每个源都有覆盖：
+
+搜索："site:jiqizhixin.com 深度 2026年6月"（机器之心）
+搜索："site:qbitai.com 人工智能 2026年6月"（量子位）
+搜索："site:geekpark.net AI 2026年6月"（极客公园）
 搜索："新智元 AI 深度 2026年6月"
-搜索："硅星人 AI 2026年6月"
-搜索："Deeptech 深科技 AI 2026年6月"
-搜索："Z Finance AI 投资 2026年6月"
-搜索："特工宇宙 AI 2026年6月"
-关注：深度长文、独家解读、行业分析。优先收录有独特视角的文章，跳过纯新闻通稿。每条附简短推荐理由。
+搜索："硅星人 AI 深度 2026年6月"
+搜索："Deeptech 深科技 人工智能 2026年6月"
+搜索："elsewhere 人工智能 AI 深度 2026年6月"
+搜索："Z Finance AI 人工智能 投资 融资 2026年6月"
+搜索："特工宇宙 AI Agent 2026年6月"
+
+**重要原则**：
+- 搜索结果全量浏览，但只展示最重要的 8-12 篇
+- 同一来源最多选 2 篇（避免被单一源垄断）
+- 优先选有独家视角、深度分析、产业洞察的文章
+- 跳过纯新闻通稿、PR 稿、水文
+- 每条附推荐理由，说明为什么这篇值得读
+- 如果某个源当天确实没有好内容，标注该源「今日暂无深度内容」
+- 标注每篇文章来源
 
 ## 输出格式
 
