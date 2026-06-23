@@ -2,7 +2,7 @@
 
 你是 AI 行业日报编辑。生成今天（{{TODAY}}）的日报，保存到 `daily-briefings/{{TODAY}}.md`。
 
-## 搜索步骤（每个独立执行，共 10 次搜索）
+## 搜索步骤（每个独立执行，共 8 组搜索）
 
 ### 1. 科研学术 — 国际
 搜索："latest AI research arXiv papers {{TODAY}}"
@@ -40,17 +40,28 @@
 
 ### 8. 精选文章 — 中文深度源（全面搜索，精选展示）
 
-逐个搜索以下 9 个来源，确保每个源都有覆盖：
+逐个搜索以下来源，确保每个源都有覆盖：
 
+**有独立网站的源（WebSearch site: 搜索）：**
 搜索："site:jiqizhixin.com 深度 2026年6月"（机器之心）
 搜索："site:qbitai.com 人工智能 2026年6月"（量子位）
 搜索："site:geekpark.net AI 2026年6月"（极客公园）
-搜索："新智元 AI 深度 2026年6月"
+搜索："新智元 AI 深度 2026年6月"（文章多平台转载，通用搜索即可）
 搜索："硅星人 AI 深度 2026年6月"
 搜索："Deeptech 深科技 人工智能 2026年6月"
-搜索："elsewhere 人工智能 AI 深度 2026年6月"
-搜索："Z Finance AI 人工智能 投资 融资 2026年6月"
 搜索："特工宇宙 AI Agent 2026年6月"
+
+**elsewhere（elsewhere.news）：**
+WebSearch 对该站索引较弱。改用 curl 抓取：
+`curl -sL "https://elsewhere.news/en" 2>&1 | grep -oP '<title>[^<]+</title>'`
+从返回的标题列表中筛选 AI 相关文章。文章 URL 格式为 `https://elsewhere.news/en/author-.../slug` 或 `https://elsewhere.news/en/zhenfund/slug`。
+关注：AI 产业链深度访谈、中国科技创投报道。
+
+**Z Finance（知乎 zhihu.com/people/zfinancenews）：**
+知乎有严格反爬机制，curl 和 WebSearch 均受限。尝试：
+搜索："site:zhihu.com Z Finance AI 融资"（搜索知乎上被索引的内容）
+搜索："Z Finance AI 投资 融资"（搜索转载到其他平台的文章）
+如果当日确实无法获取，标注「Z Finance：今日无法获取」。
 
 **重要原则**：
 - 搜索结果全量浏览，但只展示最重要的 8-12 篇
