@@ -41,7 +41,7 @@ AI-Daily-Briefing/
 
 ## 运行方式
 
-- **自动**：CronCreate 每天早上 8:07 触发完整流水线
+- **自动**：CronCreate 每天晚上 9:07 触发完整流水线
 - **手动**：说"生成今天的 AI 日报"
 - **本地查看**：双击 `view.bat` 或在浏览器打开 `index.html`
 - **远程查看**：https://leoljq.github.io/AI-Daily-Briefing/
