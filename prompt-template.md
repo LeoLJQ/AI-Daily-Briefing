@@ -48,7 +48,7 @@
 搜索："site:geekpark.net AI 2026年6月"（极客公园）
 搜索："新智元 AI 深度 2026年6月"（文章多平台转载，通用搜索即可）
 搜索："硅星人 AI 深度 2026年6月"
-搜索："Deeptech 深科技 人工智能 2026年6月"
+搜索：""DeepTech深科技" AI 2026年6月"（须用全称+引号，否则信号弱）
 搜索："特工宇宙 AI Agent 2026年6月"
 
 **elsewhere（elsewhere.news）：**
@@ -57,11 +57,10 @@ WebSearch 对该站索引较弱。改用 curl 抓取：
 从返回的标题列表中筛选 AI 相关文章。文章 URL 格式为 `https://elsewhere.news/en/author-.../slug` 或 `https://elsewhere.news/en/zhenfund/slug`。
 关注：AI 产业链深度访谈、中国科技创投报道。
 
-**Z Finance（知乎 zhihu.com/people/zfinancenews）：**
-知乎有严格反爬机制，curl 和 WebSearch 均受限。尝试：
-搜索："site:zhihu.com Z Finance AI 融资"（搜索知乎上被索引的内容）
-搜索："Z Finance AI 投资 融资"（搜索转载到其他平台的文章）
-如果当日确实无法获取，标注「Z Finance：今日无法获取」。
+**Z Finance（知乎 zhihu.com/people/zfinancenews + 今日头条）：**
+知乎反爬 + 今日头条纯 JS 渲染，curl 和 WebSearch 均受限。
+尝试：搜索 "Z Finance AI 融资 投资"（搜索可能被转载到其他平台的文章）。
+如果当日确实无法获取，标注「Z Finance：平台限制，今日无法获取」。
 
 **重要原则**：
 - 搜索结果全量浏览，但只展示最重要的 8-12 篇
