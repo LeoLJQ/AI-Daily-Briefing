@@ -57,10 +57,11 @@ WebSearch 对该站索引较弱。改用 curl 抓取：
 从返回的标题列表中筛选 AI 相关文章。文章 URL 格式为 `https://elsewhere.news/en/author-.../slug` 或 `https://elsewhere.news/en/zhenfund/slug`。
 关注：AI 产业链深度访谈、中国科技创投报道。
 
-**Z Finance（知乎 zhihu.com/people/zfinancenews + 今日头条）：**
-知乎反爬 + 今日头条纯 JS 渲染，curl 和 WebSearch 均受限。
-尝试：搜索 "Z Finance AI 融资 投资"（搜索可能被转载到其他平台的文章）。
-如果当日确实无法获取，标注「Z Finance：平台限制，今日无法获取」。
+**Z Finance（搜狐号 m.sohu.com/media/122074763）：**
+WebSearch + curl 搜狐号主页获取文章列表：
+`curl -sL "https://m.sohu.com/media/122074763" -H "User-Agent: Mozilla/5.0" | grep -oP '<title>[^<]+</title>'`
+提取标题和 URL（格式：`https://m.sohu.com/a/{id}_122074763`）。
+关注：AI 融资深度分析、独角兽追踪、行业独家报道。
 
 **重要原则**：
 - 搜索结果全量浏览，但只展示最重要的 8-12 篇
