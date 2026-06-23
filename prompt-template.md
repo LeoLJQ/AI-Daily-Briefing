@@ -87,7 +87,8 @@ WebSearch + curl 搜狐号主页获取文章列表：
 - 优先选有独家视角、深度分析、产业洞察的文章
 - 跳过纯新闻通稿、PR 稿、水文
 - 每条附推荐理由，说明为什么这篇值得读
-- 标注每篇文章来源，使用可打开的转载链接（非 JS 渲染官网）
+- 标注每篇文章来源
+- **链接质量**：只使用 163(m.163.com/dy/)、搜狐(sohu.com)、新浪(sina.com.cn)、36氪(36kr.com)、虎嗅(huxiu.com)、品玩(pingwest.com)、腾讯新闻(news.qq.com)、凤凰网(ifeng.com) 等主流平台的可打开链接。绝对不用 ragalahari.com、egltours.com、mangaloretoday.com 等随机域名
 
 ## 输出格式
 
