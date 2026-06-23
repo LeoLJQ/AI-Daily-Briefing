@@ -313,13 +313,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     margin-left: 260px;
     flex: 1;
     padding: 32px 40px;
-    max-width: 900px;
+    display: flex;
+    justify-content: center;
   }
 
   .briefing {
     background: var(--card-bg);
     border-radius: 12px;
     padding: 40px 48px;
+    max-width: 1000px;
+    width: 100%;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     line-height: 1.8;
   }
