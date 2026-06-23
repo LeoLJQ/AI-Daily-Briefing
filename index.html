@@ -9,281 +9,196 @@
 <title>AI 行业日报</title>
 <style>
   :root {
-    --bg: #f5f3f0;
-    --sidebar-bg: #1a1a2e;
-    --sidebar-text: #b0b0c0;
+    --bg: #f7f6f3;
+    --sidebar-bg: #111827;
+    --sidebar-text: #9ca3af;
     --sidebar-active: #ffffff;
-    --sidebar-hover: #2a2a4e;
+    --sidebar-hover: #1f2937;
     --card-bg: #ffffff;
-    --text: #2c2c2c;
-    --text-secondary: #6b6b6b;
-    --accent: #3b82f6;
-    --accent-dim: #2563eb;
-    --border: #e5e5e5;
-    --tag-bg: #eff6ff;
-    --tag-text: #3b82f6;
+    --text: #1f2937;
+    --text-secondary: #6b7280;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --border: #e5e7eb;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-hover: 0 4px 12px rgba(0,0,0,0.08);
+    --radius: 10px;
+    --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-      "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
-      sans-serif;
+      "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     background: var(--bg);
     color: var(--text);
     display: flex;
     min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.7;
   }
 
   /* ── Sidebar ── */
   nav {
-    width: 260px;
-    min-width: 260px;
+    width: 240px; min-width: 240px;
     background: var(--sidebar-bg);
     color: var(--sidebar-text);
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 10;
+    display: flex; flex-direction: column;
+    position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
     overflow-y: auto;
   }
-
   .nav-header {
-    padding: 28px 24px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
-
-  .nav-header h1 {
-    color: #fff;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-  }
-
-  .nav-header .subtitle {
-    font-size: 12px;
-    color: var(--sidebar-text);
-    margin-top: 4px;
-  }
-
-  .nav-list {
-    flex: 1;
-    padding: 8px 0;
-    list-style: none;
-  }
-
+  .nav-header h1 { color: #fff; font-size: 16px; font-weight: 700; }
+  .nav-header .subtitle { font-size: 11px; color: var(--sidebar-text); margin-top: 2px; }
+  .nav-list { flex: 1; padding: 6px 0; list-style: none; }
   .nav-list li a {
-    display: block;
-    padding: 10px 24px;
-    color: var(--sidebar-text);
-    text-decoration: none;
-    font-size: 14px;
-    transition: all 0.15s ease;
-    border-left: 3px solid transparent;
-    cursor: pointer;
+    display: block; padding: 9px 20px; color: var(--sidebar-text);
+    text-decoration: none; font-size: 13px;
+    transition: all var(--transition);
+    border-left: 3px solid transparent; cursor: pointer;
   }
-
-  .nav-list li a:hover {
-    background: var(--sidebar-hover);
-    color: #ddd;
-  }
-
+  .nav-list li a:hover { background: var(--sidebar-hover); color: #ddd; }
   .nav-list li a.active {
     color: var(--sidebar-active);
-    background: rgba(59, 130, 246, 0.15);
-    border-left-color: var(--accent);
-    font-weight: 600;
+    background: rgba(37, 99, 235, 0.18);
+    border-left-color: var(--accent); font-weight: 600;
   }
-
   .nav-list li a .date-badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.1);
-    border-radius: 4px;
-    padding: 1px 6px;
-    font-size: 11px;
-    margin-right: 8px;
+    display: inline-block; background: rgba(255,255,255,0.08);
+    border-radius: 4px; padding: 1px 6px; font-size: 11px; margin-right: 6px;
   }
-
   .nav-footer {
-    padding: 16px 24px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    font-size: 11px;
-    color: #666;
+    padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 11px; color: #555;
   }
 
-  /* ── Main content ── */
+  /* ── Floating ToC ── */
+  .toc {
+    position: fixed; top: 32px; right: 24px; z-index: 90;
+    width: 180px; font-size: 12px; opacity: 0; transform: translateX(10px);
+    transition: opacity var(--transition), transform var(--transition);
+    pointer-events: none;
+  }
+  .toc.visible { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .toc-title { font-weight: 600; color: var(--text); margin-bottom: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .toc a {
+    display: block; padding: 3px 0; color: var(--text-secondary);
+    text-decoration: none; border-left: 2px solid transparent;
+    padding-left: 8px; transition: all var(--transition);
+  }
+  .toc a:hover, .toc a.active { color: var(--accent); border-left-color: var(--accent); }
+
+  /* ── Main ── */
   main {
-    margin-left: 260px;
-    flex: 1;
-    padding: 32px 40px;
-    display: flex;
-    justify-content: center;
+    margin-left: 240px; flex: 1; padding: 28px 40px;
+    display: flex; justify-content: center; min-height: 100vh;
   }
-
   .briefing {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 40px 48px;
-    max-width: 1000px;
-    width: 100%;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    line-height: 1.8;
+    background: transparent;
+    width: 100%; max-width: 840px;
   }
 
+  /* ── Header card ── */
   .briefing h1 {
-    font-size: 26px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    letter-spacing: -0.5px;
+    font-size: 24px; font-weight: 800; letter-spacing: -0.5px;
+    background: var(--card-bg); border-radius: var(--radius);
+    padding: 24px 32px; box-shadow: var(--shadow); margin-bottom: 20px;
   }
 
-  .briefing h2 {
-    font-size: 18px;
-    font-weight: 700;
-    margin-top: 36px;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--border);
+  /* ── Section accordions ── */
+  .section {
+    background: var(--card-bg); border-radius: var(--radius);
+    box-shadow: var(--shadow); margin-bottom: 14px;
+    overflow: hidden; transition: box-shadow var(--transition);
   }
+  .section:hover { box-shadow: var(--shadow-hover); }
 
-  .briefing h3 {
-    font-size: 15px;
-    font-weight: 600;
-    margin-top: 24px;
-    margin-bottom: 8px;
-    color: #444;
-  }
-
-  .briefing p {
-    margin-bottom: 12px;
-  }
-
-  .briefing ul {
-    margin: 8px 0 16px 0;
-    padding-left: 20px;
-  }
-
-  .briefing li {
-    margin-bottom: 10px;
-    font-size: 15px;
-  }
-
-  .briefing li strong {
-    color: #1a1a2e;
-  }
-
-  .briefing strong {
-    font-weight: 600;
-  }
-
-  .briefing a {
-    color: var(--accent);
-    text-decoration: none;
-    font-size: 13px;
+  .section-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 24px; cursor: pointer; user-select: none;
+    transition: background var(--transition);
     border-bottom: 1px solid transparent;
-    transition: border-color 0.15s;
   }
+  .section-header:hover { background: #fafbfc; }
+  .section.open .section-header { border-bottom-color: var(--border); }
 
-  .briefing a:hover {
-    border-bottom-color: var(--accent);
-  }
-
-  .briefing hr {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 24px 0;
-  }
-
-  .briefing blockquote {
-    margin: 16px 0;
-    padding: 12px 20px;
-    background: #f8f9fa;
-    border-left: 4px solid var(--accent);
-    border-radius: 0 8px 8px 0;
-    font-size: 14px;
-    color: #555;
-  }
-
-  .briefing code {
-    background: #f1f3f5;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 13px;
-  }
-
-  .briefing table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 16px 0;
-    font-size: 14px;
-  }
-
-  .briefing th {
-    background: #f8f9fa;
-    padding: 10px 14px;
-    text-align: left;
-    font-weight: 600;
-    border-bottom: 2px solid var(--border);
-  }
-
-  .briefing td {
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .briefing tr:hover td {
-    background: #fafbfc;
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 80px 20px;
-    color: var(--text-secondary);
-  }
-
-  .empty-state .icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-  }
-
-  .empty-state h2 {
-    font-size: 20px;
-    margin-bottom: 8px;
+  .section-header h2, .section-header h3 {
+    flex: 1; font-size: 15px; font-weight: 700; margin: 0; padding: 0; border: none;
     color: var(--text);
-    border: none;
+  }
+  .section-arrow {
+    width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+    transition: transform var(--transition); font-size: 10px; color: var(--text-secondary);
+  }
+  .section.open .section-arrow { transform: rotate(90deg); }
+
+  .section-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
+  }
+  .section.open .section-body {
+    max-height: 20000px; padding: 16px 24px 20px;
+  }
+
+  /* ── Article cards (inside curated) ── */
+  .article-card {
+    display: flex; gap: 14px; padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .article-card:last-child { border-bottom: none; }
+  .article-card .card-img {
+    width: 80px; height: 56px; border-radius: 6px;
+    object-fit: cover; flex-shrink: 0; background: #f3f4f6;
+  }
+  .article-card .card-body { flex: 1; min-width: 0; }
+  .article-card .card-body strong { display: block; margin-bottom: 2px; font-size: 14px; }
+  .article-card .card-body p { font-size: 13px; color: var(--text-secondary); margin: 2px 0 0; }
+
+  /* ── Standard list items style ── */
+  .section-body li { margin-bottom: 10px; font-size: 14px; line-height: 1.75; }
+  .section-body li strong { color: var(--text); }
+  .section-body a { color: var(--accent); text-decoration: none; font-size: 12px; }
+  .section-body a:hover { text-decoration: underline; }
+
+  .section-body p { margin-bottom: 10px; font-size: 14px; }
+  .section-body h2 { font-size: 16px; font-weight: 700; margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .section-body h3 { font-size: 14px; font-weight: 600; margin: 16px 0 8px; color: #444; }
+
+  blockquote {
+    margin: 12px 0; padding: 10px 16px;
+    background: #f9fafb; border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0; font-size: 13px; color: #666;
+  }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  th { background: #f9fafb; padding: 8px 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--border); }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+  code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+
+  /* ── Floating image preview ── */
+  .img-preview {
+    position: fixed; bottom: 20px; right: 220px; z-index: 200;
+    max-width: 320px; max-height: 220px; border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2); display: none;
+    object-fit: cover; pointer-events: none;
   }
 
   /* ── Responsive ── */
+  @media (max-width: 1200px) { .toc { display: none; } }
   @media (max-width: 768px) {
-    nav {
-      width: 100%;
-      min-width: unset;
-      height: auto;
-      position: relative;
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
-    .nav-list {
-      display: flex;
-      overflow-x: auto;
-    }
-    .nav-list li a {
-      white-space: nowrap;
-      border-left: none;
-      border-bottom: 3px solid transparent;
-      padding: 10px 16px;
-    }
-    main {
-      margin-left: 0;
-      padding: 16px;
-    }
-    .briefing {
-      padding: 24px 20px;
-    }
+    nav { width: 100%; min-width: unset; height: auto; position: relative; flex-direction: row; flex-wrap: wrap; }
+    .nav-list { display: flex; overflow-x: auto; }
+    .nav-list li a { white-space: nowrap; border-left: none; border-bottom: 3px solid transparent; padding: 8px 14px; }
+    main { margin-left: 0; padding: 14px; }
+    .section-header { padding: 12px 16px; }
+    .section.open .section-body { padding: 12px 16px; }
+    .article-card { flex-direction: column; }
+    .article-card .card-img { width: 100%; height: 120px; }
   }
 </style>
 </head>
@@ -291,89 +206,198 @@
 
 <nav>
   <div class="nav-header">
-    <h1>📊 AI 行业日报</h1>
-    <div class="subtitle">每日自动更新 · 科研 · 产品 · 融资</div>
+    <h1>AI 行业日报</h1>
+    <div class="subtitle">科研 · 产品 · 融资 · 精选</div>
   </div>
-  <ul class="nav-list" id="navList">
-    <li><a href="#2026-06-23" onclick="showBriefing('2026-06-23');return false"><span class="date-badge">06/23</span>周一</a></li>
-  </ul>
-  <div class="nav-footer">共 1 期 | 自动生成于 2026-06-24 02:40</div>
+  <ul class="nav-list" id="navList"><li><a href="#2026-06-23" onclick="showBriefing('2026-06-23');return false"><span class="date-badge">06/23</span>周一</a></li></ul>
+  <div class="nav-footer">共 1 期</div>
 </nav>
 
+<div class="toc" id="toc">
+  <div class="toc-title">本页目录</div>
+  <div id="tocLinks"></div>
+</div>
+
 <main id="main">
-  <div class="empty-state">
-    <div class="icon">📭</div>
-    <h2>选择日期查看日报</h2>
-    <p>左侧列表中选择一个日期</p>
+  <div style="text-align:center;padding:80px 20px;color:var(--text-secondary);">
+    <p>选择左侧日期查看日报</p>
   </div>
 </main>
 
+<img class="img-preview" id="imgPreview" alt="">
+
 <script>
-// All briefing data embedded at build time
-const BRIEFINGS = {"2026-06-23": "<h1>AI 行业日报 — 2026-06-23</h1>\n\n<hr>\n\n<h2>🔬 科研学术</h2>\n\n<h3>国际</h3>\n\n<ul>\n<li><strong><a href=\"https://www.eurekalert.org/news-releases/1132795\" target=\"_blank\" rel=\"noopener\">TRUECAM：AI 诊断会说\"我不知道\"</a></strong>（Nature Biomedical Engineering, 6月23日）— 不确定性感知的病理 AI，对超出训练范围的输入主动拒绝判断而非强行输出错误结果，在非小细胞肺癌分型中提升了跨性别和种族的公平性。<a href=\"https://www.eurekalert.org/news-releases/1132795\" target=\"_blank\" rel=\"noopener\">[EurekAlert</a>]</li>\n<li><strong><a href=\"https://www.webpronews.com/small-models-big-reasoning-how-vibethinker-3b-challenges-the-scale-first-orthodoxy/\" target=\"_blank\" rel=\"noopener\">VibeThinker-3B：3B 参数小模型在数学推理上超越 200 倍大模型</a></strong>（6月23日报道）— AIME 2026 得分 94.3，超 Gemini 3 Pro（91.7）；LiveCodeBench v6 Pass@1 达 80.2；后训练成本仅约 $7800。核心命题：\"可验证推理可压缩进小模型，知识则需要参数覆盖\"。<a href=\"https://www.webpronews.com/small-models-big-reasoning-how-vibethinker-3b-challenges-the-scale-first-orthodoxy/\" target=\"_blank\" rel=\"noopener\">[WebProNews</a>]</li>\n<li><strong><a href=\"https://www.techwalker.com/2026/0623/3191354.shtml\" target=\"_blank\" rel=\"noopener\">REVES：教 LLM 像高手棋手一样从错误中学习</a></strong>（西北大学/亚马逊/高通/明尼苏达大学, 6月23日报道）— 分解纠错训练让模型从单步错误中自主恢复，LiveCodeBench +6.5 分，小模型经训练后在复杂优化问题上匹敌大模型。<a href=\"https://www.techwalker.com/2026/0623/3191354.shtml\" target=\"_blank\" rel=\"noopener\">[TechWalker</a>]</li>\n</ul>\n<h3>国内</h3>\n\n<ul>\n<li><strong>今日暂无国内高校/企业的最新论文被搜索引擎收录。</strong></li>\n</ul>\n<hr>\n\n<h2>🚀 产品应用</h2>\n\n<h3>国际</h3>\n\n<ul>\n<li><strong>Getty Images 与 OpenAI 达成授权合作</strong>（6月23日）— Getty 海量图片库集成至 ChatGPT 搜索和发现功能，Getty 股价盘中飙升 145%。此前 Getty 曾起诉 Stability AI 侵权，此次合作标志着内容方与 AI 公司从对抗走向共赢。<a href=\"https://www.theedgesingapore.com/news/artificial-intelligence/getty-images-surges-145-after-announcing-openai-deal\" target=\"_blank\" rel=\"noopener\">[The Edge Singapore</a>]</li>\n<li><strong>五眼联盟发布 AI 网络安全紧急警告</strong>（6月23日）— 美英加澳新联合声明称高级 AI 模型可能在\"数月内\"具备瘫痪政府和企业网络的能力。此前数日，特朗普政府已下令 Anthropic 限制外国公民访问其最强模型。<a href=\"https://www.cnn.com/2026/06/23/us/5-things-to-know-for-june-23-ai-warning-primaries-nuclear-weapons-uk-political-turmoil-montreal-shooting\" target=\"_blank\" rel=\"noopener\">[CNN</a>]</li>\n<li><strong>联合国秘书长要求 AI 公司公开环境成本</strong>（6月23日）— Guterres 在伦敦气候行动周发起 AI 环境透明倡议，警告到 2030 年 AI 数据中心的用电量将超过全球前五名之外的所有国家，用水量足以覆盖整个撒哈拉以南非洲 13 亿人的基本需求。<a href=\"https://www.pakistantoday.com.pk/2026/06/23/un-chief-urges-ai-firms-to-disclose-environmental-costs\" target=\"_blank\" rel=\"noopener\">[Pakistan Today</a>]</li>\n<li><strong>Cohere CEO 警告：租用外国 AI 是国家安全风险</strong>（6月23日）— Aidan Gomez 以美国限制 Anthropic Mythos 模型为例，呼吁各国建设\"主权 AI\"。<a href=\"https://fortune.com/2026/06/23/cohere-ceo-sovereign-ai-anthropic-mythos-national-security-risk/\" target=\"_blank\" rel=\"noopener\">[Fortune</a>]</li>\n</ul>\n<h3>国内</h3>\n\n<ul>\n<li><strong>火山引擎 FORCE 大会：豆包 2.1 Pro 发布</strong>（6月23日）— Coding、Agent、VLM 三大能力跨越\"生产级质变点\"，多项评测超越 Claude Opus 4.6。芯片设计 RTL 测试连续运行近 18 小时、9 轮迭代、完成 1303 行代码。500+ Agent 同步协作生成 3D 虚拟城市。日均 Token 调用量突破 180 万亿（两年 1500 倍），MaaS 市场份额 49.5%，定价为 Claude 的约 1/5。<a href=\"https://m.163.com/dy/article/L04GF29D0511AQHO.html\" target=\"_blank\" rel=\"noopener\">[163</a>] <a href=\"http://www.bjnews.com.cn/detail/1782214513129479.html\" target=\"_blank\" rel=\"noopener\">[新京报</a>]</li>\n<li><strong>Seedance 2.5 视频模型首次亮相</strong>（6月23日）— 30 秒单段原生视频直出，最多 50 个全模态素材联合生成，预计 7 月正式上线。同步发布 Seedream 5.0 Pro（图像，多图层分离+交互编辑）、Seed-Audio 1.0（音频，多角色对白+背景音乐+拟音特效）。<a href=\"https://stcn.com/article/detail/3974239.html\" target=\"_blank\" rel=\"noopener\">[证券时报</a>]</li>\n<li><strong>英特尔联合长安汽车发布 AI 座舱方案</strong>（6月23日）— Intel AI Box Ultra 首次量产上车，LLM 本地运行，隧道/地库无网络仍可语音+视觉+手势交互，数据完全本地处理。同步发布\"AI 家庭大脑\"方案。<a href=\"https://www.sohu.com/a/1040476910_122014422\" target=\"_blank\" rel=\"noopener\">[搜狐</a>]</li>\n<li><strong>阿里发布视频生成模型 HappyHorse 1.1</strong>（6月23日）— 五大维度全面升级，视频生成赛道竞争加剧。<a href=\"https://www.aoyii.com/ai-morning-20260623\" target=\"_blank\" rel=\"noopener\">[AI早报</a>]</li>\n<li><strong>豆包 AI 手机二代即将发售</strong>（6月23日）— 努比亚联合开发，豆包灰测打车等跨应用语音操作功能。<a href=\"http://www.geekpark.net/news/366326\" target=\"_blank\" rel=\"noopener\">[极客公园</a>]</li>\n</ul>\n<hr>\n\n<h2>💰 融资进展</h2>\n\n<h3>国际</h3>\n\n<ul>\n<li><strong>Baseten 获 $15 亿融资，估值 $130 亿</strong>（6月23日）— Sands Capital 和 Wellington Management 领投，收入年增 20 倍，18 个月内第 4 次融资。客户包括 Notion、Cursor、HubSpot。<a href=\"https://www.investing.com/news/economy-news/ai-startup-baseten-hits-13-billion-valuation-as-australias-blackbird-makes-record-bet-4754600\" target=\"_blank\" rel=\"noopener\">[Investing.com</a>]</li>\n<li><strong>高通洽购 AI 芯片公司 Modular，约 $40 亿</strong>（6月23日）— 加码 AI 推理芯片，与英伟达竞争升级。<a href=\"https://www.theedgesingapore.com/news/us-stocks/stocks-fall-spacexs-rout-offsets-us-iran-hopes\" target=\"_blank\" rel=\"noopener\">[The Edge Singapore</a>]</li>\n<li><strong>SpaceX 发行 $200 亿公司债 + $1.5 亿/月 AI 算力大单</strong>（6月23日）— Reflection AI（前 Google DeepMind 团队创立）签约使用 SpaceX Colossus 2 数据中心，合同期至 2029 年。SpaceX 同时与 Google、Anthropic 签署算力合同。穆迪评级 Baa1。<a href=\"https://www.asiae.co.kr/en/article/2026062304220778149\" target=\"_blank\" rel=\"noopener\">[Asia Business Daily</a>]</li>\n<li><strong>JustAI 获 $1700 万 A 轮</strong>（6月23日）— Base10 Partners 领投，YC、Peak XV 参投，ARR 年增 5 倍。<a href=\"https://www.advfn.com/stock-market/stock-news/98794017/justai-raises-17m-series-a-to-build-an-agentic-ma\" target=\"_blank\" rel=\"noopener\">[ADVFN</a>]</li>\n<li><strong>Groq 获 $6.5 亿融资，全面转型推理云服务</strong>（硅星Breaknews, 6月23日）— Disruptive 和 Infinitum 领投，全球运营 13 个数据中心，服务超 500 万开发者。此前英伟达已获其 LPU 技术授权并挖走创始人。<a href=\"https://www.163.com/dy/article/L04ONNDL05566WT8.html\" target=\"_blank\" rel=\"noopener\">[网易</a>]</li>\n<li><strong>Comand AI 获 €3200 万 A 轮</strong>（6月23日）— 法国 AI 国防公司，瑞典萨博参投，拓展北约市场。<a href=\"https://webiis08.mondaq.com/pressrelease/199846/proskauer-advises-blossom-capital-on-%E2%82%AC32-million-funding-round-for-comand-ai\" target=\"_blank\" rel=\"noopener\">[Mondaq</a>]</li>\n</ul>\n<h3>国内</h3>\n\n<ul>\n<li><strong>恒为科技 4.67 亿元收购数珩科技 51% 股权</strong>（6月23日）— 补齐\"算力底座+AI模型+场景应用\"全产业链，标的承诺 2026-2028 累计净利不低于 2.82 亿元。<a href=\"https://www.cls.cn/detail/2407099\" target=\"_blank\" rel=\"noopener\">[财联社</a>]</li>\n<li><strong>光轮智能完成 10 亿元战略融资</strong>（6月23日）— 物理 AI 数据与评测基础设施，巨人网络、中关村科学城基金等参投。2025年营收增长 10 倍，合作方含英伟达、谷歌、字节、比亚迪。<a href=\"https://www.cnstock.com/commonDetail/732791\" target=\"_blank\" rel=\"noopener\">[中国证券网</a>]</li>\n<li><strong>影眸科技完成数亿元融资</strong>（6月23日）— 3D 生成大模型，凯辉基金、上海国投领投，字节、美团龙珠、红杉为历史股东。新产品上线首月 ARR 环比增速超 400%。<a href=\"https://finance.sina.com.cn/roll/2026-06-23/doc-iniekeey2079360.shtml\" target=\"_blank\" rel=\"noopener\">[新浪财经</a>]</li>\n<li><strong>昆仑行 90 天内三轮融资累计数十亿元</strong>（6月23日）— 通用人形机器人，高榕、高瓴、中科创星等参投。<a href=\"https://en.jiemian.com/article/14631088.html\" target=\"_blank\" rel=\"noopener\">[界面新闻</a>]</li>\n<li><strong>凌川科技完成数亿元 A+ 轮</strong>（6月23日）— AI 视频与多模态芯片，北京市 AI 基金与快手联合发起。<a href=\"https://dahecube.com/article.html?artid=278001\" target=\"_blank\" rel=\"noopener\">[大河财立方</a>]</li>\n<li><strong>正行创新近 1 亿美元天使轮</strong>（6月23日）— 具身智能/世界动作模型，CP集团、华勤科技等参投。<a href=\"https://eu.36kr.com/en/newsflashes/3865134271599874\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n</ul>\n<hr>\n\n<h2>📊 市场动态</h2>\n\n<ul>\n<li><strong>全球 AI 概念股暴跌</strong>（6月23日）— 韩国 KOSPI 暴跌 10% 触发熔断，费城半导体指数跌 7.6%，SpaceX 跌 16% 蒸发 $4000 亿。触发因素：B200 GPU 租赁价三周跌 30% → 市场质疑\"算力稀缺\"定价。叠加腾讯 Token 额度压缩、微软取消第三方 Claude Code 授权。<a href=\"https://www.21jingji.com/article/20260623/herald/d304f50bfa29bfd7e4895fd6e3fbc0af.html\" target=\"_blank\" rel=\"noopener\">[21经济</a>]</li>\n<li><strong>智谱市值盘中突破万亿港元</strong>（6月23日）— 港股盘中触 1.27 万亿港元，年内涨超 2000%。GLM-5.2 被列入\"新御三家\"，MaaS ARR 17 亿元（年增 60 倍）。<a href=\"https://www.tmtpost.com/8036661.html\" target=\"_blank\" rel=\"noopener\">[钛媒体</a>]</li>\n</ul>\n<hr>\n\n<h2>📖 精选文章</h2>\n\n<h3>英文深度源</h3>\n\n<ul>\n<li><strong><a href=\"https://stratechery.com/2026/the-stuff-of-mythos/\" target=\"_blank\" rel=\"noopener\">The Stuff of Myth(os)</a></strong>（Stratechery, Ben Thompson）— 深度拆解 Anthropic Fable 5/Mythos 5 发布与美国出口管制博弈。<a href=\"https://stratechery.com/2026/the-stuff-of-mythos/\" target=\"_blank\" rel=\"noopener\">[Stratechery</a>]</li>\n<li><strong><a href=\"https://fortune.com/2026/06/23/cohere-ceo-sovereign-ai-anthropic-mythos-national-security-risk/\" target=\"_blank\" rel=\"noopener\">Renting AI from foreign providers is a national security risk</a></strong>（Fortune, 6月23日）— Cohere CEO 提出\"主权 AI\"概念，警示依赖外国 AI 的结构性风险。<a href=\"https://fortune.com/2026/06/23/cohere-ceo-sovereign-ai-anthropic-mythos-national-security-risk/\" target=\"_blank\" rel=\"noopener\">[Fortune</a>]</li>\n</ul>\n<h3>中文公众号/网站</h3>\n\n<ul>\n<li><strong><a href=\"https://w.geekpark.net/news/366371\" target=\"_blank\" rel=\"noopener\">微信推了 AI 助手「小微」，它会成为 AI 大模型的战场吗？</a></strong>（极客公园，6月23日）— 深度分析微信原生 AI 助手的产品逻辑和生态影响：WeLM（MoE 80B）+ DeepSeek 兜底。<a href=\"https://w.geekpark.net/news/366371\" target=\"_blank\" rel=\"noopener\">[极客公园</a>]</li>\n<li><strong><a href=\"http://www.geekpark.net/news/366304\" target=\"_blank\" rel=\"noopener\">美国版「幻方量化」，没做 DeepSeek，但押注 Anthropic 爆赚 50 倍</a></strong>（极客公园，6月23日）— 拆解美国量化基金通过早期投资 Anthropic 获 50 倍回报，少见的\"投资回报\"视角。<a href=\"http://www.geekpark.net/news/366304\" target=\"_blank\" rel=\"noopener\">[极客公园</a>]</li>\n<li><strong><a href=\"https://finance.sina.cn/2026-06-23/detail-inieixxc8837803.d.html\" target=\"_blank\" rel=\"noopener\">给 AI 看的「P 站」，藏着关于「人与 AI」最大的讽刺</a></strong>（极客公园，6月23日新浪转载）— 从 MoltHub 讽刺项目切入，讨论 Anthropic Claude 宪法、OpenAI 人格团队、xAI AI 女友。<a href=\"https://finance.sina.cn/2026-06-23/detail-inieixxc8837803.d.html\" target=\"_blank\" rel=\"noopener\">[新浪</a>]</li>\n<li><strong><a href=\"https://www.panewslab.com/en/articles/019eeed2-84ea-73e9-9430-70528876a377\" target=\"_blank\" rel=\"noopener\">AI 巨头的「Token 补贴战」快打完了？</a></strong>（极客公园，6月23日）— 分析 Google 降价对 OpenAI 和 Anthropic 商业模式的冲击。<a href=\"https://www.panewslab.com/en/articles/019eeed2-84ea-73e9-9430-70528876a377\" target=\"_blank\" rel=\"noopener\">[PANews</a>]</li>\n<li><strong><a href=\"https://m.sohu.com/a/1040531841_122074763\" target=\"_blank\" rel=\"noopener\">深度｜世界模型的五大学派：华人学者正在撑起全球 AI 下一战的半壁江山</a></strong>（Z Finance，6月23日）— 系统梳理世界模型五条技术路线，拆解各学派核心假设和代表人物。<a href=\"https://m.sohu.com/a/1040531841_122074763\" target=\"_blank\" rel=\"noopener\">[搜狐</a>]</li>\n<li><strong><a href=\"https://www.sohu.com/a/1040393760_129720\" target=\"_blank\" rel=\"noopener\">战胜 Mythos 5，OpenAI 安全专用 GPT-5.5-Cyber 完全体来了</a></strong>（机器之心，6月23日搜狐转载）— CyberGym 得分 85.6%，超 GPT-5.5 和 Mythos 5，同步发布 Codex Security 插件。<a href=\"https://www.sohu.com/a/1040393760_129720\" target=\"_blank\" rel=\"noopener\">[搜狐</a>]</li>\n<li><strong><a href=\"https://www.163.com/dy/article/L04MCDGE0511AQHO.html\" target=\"_blank\" rel=\"noopener\">LeCun、谢赛宁转发的世界模型与 VLA 共融方案：VLA-JEPA</a></strong>（机器之心，6月23日163转载）— 中科大+中关村学院联合提出，仅用 13 条轨迹完成装配，已开源。<a href=\"https://www.163.com/dy/article/L04MCDGE0511AQHO.html\" target=\"_blank\" rel=\"noopener\">[163</a>]</li>\n<li><strong><a href=\"https://36kr.com/p/3865437060158724\" target=\"_blank\" rel=\"noopener\">生物学的 EDA 时刻来了！</a></strong>（机器之心，6月23日36氪转载）— 恩和科技发布 BPL 生物学协议语言，LLM×编译器闭环自校正，首通率 82.3%。<a href=\"https://36kr.com/p/3865437060158724\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n<li><strong><a href=\"https://www.qbitai.com/2026/06/437382.html\" target=\"_blank\" rel=\"noopener\">机器人全栈操作系统！老黄率先抛出「具身版安卓」</a></strong>（量子位，6月23日）— 英伟达发布机器人全栈 OS。<a href=\"https://www.qbitai.com/2026/06/437382.html\" target=\"_blank\" rel=\"noopener\">[量子位</a>]</li>\n<li><strong><a href=\"https://www.qbitai.com/2026/06/437340.html\" target=\"_blank\" rel=\"noopener\">马斯克又盯上 AI 基建：特斯拉要卖「算力积木」了</a></strong>（量子位，6月23日）— 特斯拉推出模块化 AI 算力方案。<a href=\"https://www.qbitai.com/2026/06/437340.html\" target=\"_blank\" rel=\"noopener\">[量子位</a>]</li>\n<li><strong><a href=\"https://www.qbitai.com/2026/06/437672.html\" target=\"_blank\" rel=\"noopener\">云计算一哥，让小鹏、Kimi 和猎豹都爽了一把</a></strong>（量子位，6月23日）— 阿里云 AI 基础设施客户案例深度报道。<a href=\"https://www.qbitai.com/2026/06/437672.html\" target=\"_blank\" rel=\"noopener\">[量子位</a>]</li>\n<li><strong><a href=\"https://www.qbitai.com/2026/06/437330.html\" target=\"_blank\" rel=\"noopener\">小扎「蒸馏员工」计划紧急喊停！私聊数据都泄露了</a></strong>（量子位，6月23日）— Meta MCI 项目因 4.5 万张数据表权限错误导致隐私泄露。<a href=\"https://www.qbitai.com/2026/06/437330.html\" target=\"_blank\" rel=\"noopener\">[量子位</a>]</li>\n<li><strong><a href=\"https://www.sohu.com/a/1040125112_473283\" target=\"_blank\" rel=\"noopener\">超越 Claude Mythos 的 AI 模型，诞生了？</a></strong>（新智元，6月23日搜狐转载）— Sakana AI 发布 Fugu Ultra 多智能体调度系统，\"大模型将去，调度为王\"。<a href=\"https://www.sohu.com/a/1040125112_473283\" target=\"_blank\" rel=\"noopener\">[搜狐</a>]</li>\n<li><strong><a href=\"https://www.36kr.com/p/3864888305636360\" target=\"_blank\" rel=\"noopener\">「AI 几小时攻破 NSA」刷屏，真相竟是一场红队演习？</a></strong>（新智元，6月23日36氪转载）— 澄清 Mythos 攻破 NSA 实为授权红队演练，Mythos 仅存活 72 小时即被出口管制令下线。<a href=\"https://www.36kr.com/p/3864888305636360\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n<li><strong><a href=\"https://36kr.com/p/3865676543972360\" target=\"_blank\" rel=\"noopener\">刚刚，物理世界的 Anthropic 现身，团队来自中国</a></strong>（新智元，6月23日36氪转载）— Momenta 通过港交所聆讯，被称为\"物理世界的 Anthropic\"。<a href=\"https://36kr.com/p/3865676543972360\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n<li><strong><a href=\"https://36kr.com/p/3865123828093957\" target=\"_blank\" rel=\"noopener\">OpenAI 祭出满血 GPT-5.5-Cyber，Codex 却被曝史诗级 bug</a></strong>（新智元，6月23日36氪转载）— Codex 被发现一年写入 640TB 足以写废 SSD。<a href=\"https://36kr.com/p/3865123828093957\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n<li><strong><a href=\"https://news.qq.com/rain/a/20260622Q0EL2K00\" target=\"_blank\" rel=\"noopener\">业余语言学家用 Claude Code 破译线形文字 A</a></strong>（新智元，6月23日腾讯新闻转载）— 408 个词条、40 个音值、9 页语法手稿，正由剑桥和罗格斯大学专家审核。<a href=\"https://news.qq.com/rain/a/20260622Q0EL2K00\" target=\"_blank\" rel=\"noopener\">[腾讯新闻</a>]</li>\n<li><strong><a href=\"https://www.163.com/dy/article/L03QG2G105119734.html\" target=\"_blank\" rel=\"noopener\">独家｜姚颂三度创业，获近亿美元融资入局物理智能</a></strong>（DeepTech深科技，6月23日163转载）— 34岁姚颂创立 Striding AI，LaWAM 模型任务成功率 98.6%。<a href=\"https://www.163.com/dy/article/L03QG2G105119734.html\" target=\"_blank\" rel=\"noopener\">[163</a>]</li>\n<li><strong><a href=\"https://www.huxiu.com/article/4869447.html\" target=\"_blank\" rel=\"noopener\">实测微信 AI 助手「小微」：12 个场景看懂它的能力和边界</a></strong>（硅星人Pro，6月23日虎嗅转载）— 对微信小微的全场景实测，涵盖聊天、红包、朋友圈、小程序、支付。<a href=\"https://www.huxiu.com/article/4869447.html\" target=\"_blank\" rel=\"noopener\">[虎嗅</a>]</li>\n<li><strong>特工宇宙、elsewhere 今日文章未被搜索引擎收录。</strong></li>\n</ul>\n<hr>\n\n<h2>📌 今日重点</h2>\n\n<h3>1. 豆包 2.1 发布——国产大模型跨越「生产级质变点」</h3>\n\n<p>6月23日的火山引擎 FORCE 大会是当日最重要事件。豆包 2.1 Pro 在 Coding、Agent、VLM 三个方向首次跨越\"质变点\"，芯片设计 RTL 测试连续运行近 18 小时即为力证。关键数字：日均 Token 180 万亿（两年 1500 倍）、MaaS 份额 49.5%、成本为 Claude 的 1/5。这已不只是\"模型跑分\"级别的竞争，而是进入了\"谁能进企业生产线\"的阶段。</p>\n\n<h3>2. 全球 AI 股暴跌——算力叙事遭遇 ROI 拷问</h3>\n\n<p>同日，全球 AI 概念股重挫。导火索是 B200 GPU 租赁价三周跌 30%，深层是市场从\"先烧钱占坑\"切换到\"回报在哪\"的拷问。云巨头 2026 年 $7250 亿 AI 资本开支的回报成为最大问号。这轮调整的正面意义是：它正在把行业从\"叙事驱动\"拉回\"价值检验\"。</p>\n\n<h3>3. AI 安全与治理——从技术问题升级为国家议题</h3>\n\n<p>6月23日同一天，三条独立但相关的消息：五眼联盟 AI 网络攻击警告、联合国要求 AI 公司公开环境成本、Cohere CEO 呼吁\"主权 AI\"。AI 的讨论框架正在从\"能做多大\"转向\"谁来管、怎么管、代价谁承担\"。</p>\n\n<hr>\n\n<blockquote>\n<p>自动生成于 2026-06-23 晚间 | 所有条目仅收录 6月23日当日发布 | 下次更新：2026-06-24 晚 9:07</p>\n</blockquote>\n"};
+const BRIEFINGS = {"2026-06-23": "<h1>AI 行业日报 — 2026-06-23</h1>\n\n\n<h2 id=\"科研学术\">🔬 科研学术</h2>\n\n<h3 id=\"国际\">国际</h3>\n\n<ul>\n<li><strong><a href=\"https://www.eurekalert.org/news-releases/1132795\" target=\"_blank\" rel=\"noopener\">TRUECAM：AI 诊断会说\"我不知道\"</a></strong>（Nature Biomedical Engineering, 6月23日）— 不确定性感知的病理 AI，对超出训练范围的输入主动拒绝判断而非强行输出错误结果，在非小细胞肺癌分型中提升了跨性别和种族的公平性。<a href=\"https://www.eurekalert.org/news-releases/1132795\" target=\"_blank\" rel=\"noopener\">[EurekAlert</a>]</li>\n<li><strong><a href=\"https://www.webpronews.com/small-models-big-reasoning-how-vibethinker-3b-challenges-the-scale-first-orthodoxy/\" target=\"_blank\" rel=\"noopener\">VibeThinker-3B：3B 参数小模型在数学推理上超越 200 倍大模型</a></strong>（6月23日报道）— AIME 2026 得分 94.3，超 Gemini 3 Pro（91.7）；LiveCodeBench v6 Pass@1 达 80.2；后训练成本仅约 $7800。核心命题：\"可验证推理可压缩进小模型，知识则需要参数覆盖\"。<a href=\"https://www.webpronews.com/small-models-big-reasoning-how-vibethinker-3b-challenges-the-scale-first-orthodoxy/\" target=\"_blank\" rel=\"noopener\">[WebProNews</a>]</li>\n<li><strong><a href=\"https://www.techwalker.com/2026/0623/3191354.shtml\" target=\"_blank\" rel=\"noopener\">REVES：教 LLM 像高手棋手一样从错误中学习</a></strong>（西北大学/亚马逊/高通/明尼苏达大学, 6月23日报道）— 分解纠错训练让模型从单步错误中自主恢复，LiveCodeBench +6.5 分，小模型经训练后在复杂优化问题上匹敌大模型。<a href=\"https://www.techwalker.com/2026/0623/3191354.shtml\" target=\"_blank\" rel=\"noopener\">[TechWalker</a>]</li>\n</ul>\n<h3 id=\"国内\">国内</h3>\n\n<ul>\n<li><strong>今日暂无国内高校/企业的最新论文被搜索引擎收录。</strong></li>\n</ul>\n\n<h2 id=\"产品应用\">🚀 产品应用</h2>\n\n<h3 id=\"国际\">国际</h3>\n\n<ul>\n<li><strong>Getty Images 与 OpenAI 达成授权合作</strong>（6月23日）— Getty 海量图片库集成至 ChatGPT 搜索和发现功能，Getty 股价盘中飙升 145%。此前 Getty 曾起诉 Stability AI 侵权，此次合作标志着内容方与 AI 公司从对抗走向共赢。<a href=\"https://www.theedgesingapore.com/news/artificial-intelligence/getty-images-surges-145-after-announcing-openai-deal\" target=\"_blank\" rel=\"noopener\">[The Edge Singapore</a>]</li>\n<li><strong>五眼联盟发布 AI 网络安全紧急警告</strong>（6月23日）— 美英加澳新联合声明称高级 AI 模型可能在\"数月内\"具备瘫痪政府和企业网络的能力。此前数日，特朗普政府已下令 Anthropic 限制外国公民访问其最强模型。<a href=\"https://www.cnn.com/2026/06/23/us/5-things-to-know-for-june-23-ai-warning-primaries-nuclear-weapons-uk-political-turmoil-montreal-shooting\" target=\"_blank\" rel=\"noopener\">[CNN</a>]</li>\n<li><strong>联合国秘书长要求 AI 公司公开环境成本</strong>（6月23日）— Guterres 在伦敦气候行动周发起 AI 环境透明倡议，警告到 2030 年 AI 数据中心的用电量将超过全球前五名之外的所有国家，用水量足以覆盖整个撒哈拉以南非洲 13 亿人的基本需求。<a href=\"https://www.pakistantoday.com.pk/2026/06/23/un-chief-urges-ai-firms-to-disclose-environmental-costs\" target=\"_blank\" rel=\"noopener\">[Pakistan Today</a>]</li>\n<li><strong>Cohere CEO 警告：租用外国 AI 是国家安全风险</strong>（6月23日）— Aidan Gomez 以美国限制 Anthropic Mythos 模型为例，呼吁各国建设\"主权 AI\"。<a href=\"https://fortune.com/2026/06/23/cohere-ceo-sovereign-ai-anthropic-mythos-national-security-risk/\" target=\"_blank\" rel=\"noopener\">[Fortune</a>]</li>\n</ul>\n<h3 id=\"国内\">国内</h3>\n\n<ul>\n<li><strong>火山引擎 FORCE 大会：豆包 2.1 Pro 发布</strong>（6月23日）— Coding、Agent、VLM 三大能力跨越\"生产级质变点\"，多项评测超越 Claude Opus 4.6。芯片设计 RTL 测试连续运行近 18 小时、9 轮迭代、完成 1303 行代码。500+ Agent 同步协作生成 3D 虚拟城市。日均 Token 调用量突破 180 万亿（两年 1500 倍），MaaS 市场份额 49.5%，定价为 Claude 的约 1/5。<a href=\"https://m.163.com/dy/article/L04GF29D0511AQHO.html\" target=\"_blank\" rel=\"noopener\">[163</a>] <a href=\"http://www.bjnews.com.cn/detail/1782214513129479.html\" target=\"_blank\" rel=\"noopener\">[新京报</a>]</li>\n<li><strong>Seedance 2.5 视频模型首次亮相</strong>（6月23日）— 30 秒单段原生视频直出，最多 50 个全模态素材联合生成，预计 7 月正式上线。同步发布 Seedream 5.0 Pro（图像，多图层分离+交互编辑）、Seed-Audio 1.0（音频，多角色对白+背景音乐+拟音特效）。<a href=\"https://stcn.com/article/detail/3974239.html\" target=\"_blank\" rel=\"noopener\">[证券时报</a>]</li>\n<li><strong>英特尔联合长安汽车发布 AI 座舱方案</strong>（6月23日）— Intel AI Box Ultra 首次量产上车，LLM 本地运行，隧道/地库无网络仍可语音+视觉+手势交互，数据完全本地处理。同步发布\"AI 家庭大脑\"方案。<a href=\"https://www.sohu.com/a/1040476910_122014422\" target=\"_blank\" rel=\"noopener\">[搜狐</a>]</li>\n<li><strong>阿里发布视频生成模型 HappyHorse 1.1</strong>（6月23日）— 五大维度全面升级，视频生成赛道竞争加剧。<a href=\"https://www.aoyii.com/ai-morning-20260623\" target=\"_blank\" rel=\"noopener\">[AI早报</a>]</li>\n<li><strong>豆包 AI 手机二代即将发售</strong>（6月23日）— 努比亚联合开发，豆包灰测打车等跨应用语音操作功能。<a href=\"http://www.geekpark.net/news/366326\" target=\"_blank\" rel=\"noopener\">[极客公园</a>]</li>\n</ul>\n\n<h2 id=\"融资进展\">💰 融资进展</h2>\n\n<h3 id=\"国际\">国际</h3>\n\n<ul>\n<li><strong>Baseten 获 $15 亿融资，估值 $130 亿</strong>（6月23日）— Sands Capital 和 Wellington Management 领投，收入年增 20 倍，18 个月内第 4 次融资。客户包括 Notion、Cursor、HubSpot。<a href=\"https://www.investing.com/news/economy-news/ai-startup-baseten-hits-13-billion-valuation-as-australias-blackbird-makes-record-bet-4754600\" target=\"_blank\" rel=\"noopener\">[Investing.com</a>]</li>\n<li><strong>高通洽购 AI 芯片公司 Modular，约 $40 亿</strong>（6月23日）— 加码 AI 推理芯片，与英伟达竞争升级。<a href=\"https://www.theedgesingapore.com/news/us-stocks/stocks-fall-spacexs-rout-offsets-us-iran-hopes\" target=\"_blank\" rel=\"noopener\">[The Edge Singapore</a>]</li>\n<li><strong>SpaceX 发行 $200 亿公司债 + $1.5 亿/月 AI 算力大单</strong>（6月23日）— Reflection AI（前 Google DeepMind 团队创立）签约使用 SpaceX Colossus 2 数据中心，合同期至 2029 年。SpaceX 同时与 Google、Anthropic 签署算力合同。穆迪评级 Baa1。<a href=\"https://www.asiae.co.kr/en/article/2026062304220778149\" target=\"_blank\" rel=\"noopener\">[Asia Business Daily</a>]</li>\n<li><strong>JustAI 获 $1700 万 A 轮</strong>（6月23日）— Base10 Partners 领投，YC、Peak XV 参投，ARR 年增 5 倍。<a href=\"https://www.advfn.com/stock-market/stock-news/98794017/justai-raises-17m-series-a-to-build-an-agentic-ma\" target=\"_blank\" rel=\"noopener\">[ADVFN</a>]</li>\n<li><strong>Groq 获 $6.5 亿融资，全面转型推理云服务</strong>（硅星Breaknews, 6月23日）— Disruptive 和 Infinitum 领投，全球运营 13 个数据中心，服务超 500 万开发者。此前英伟达已获其 LPU 技术授权并挖走创始人。<a href=\"https://www.163.com/dy/article/L04ONNDL05566WT8.html\" target=\"_blank\" rel=\"noopener\">[网易</a>]</li>\n<li><strong>Comand AI 获 €3200 万 A 轮</strong>（6月23日）— 法国 AI 国防公司，瑞典萨博参投，拓展北约市场。<a href=\"https://webiis08.mondaq.com/pressrelease/199846/proskauer-advises-blossom-capital-on-%E2%82%AC32-million-funding-round-for-comand-ai\" target=\"_blank\" rel=\"noopener\">[Mondaq</a>]</li>\n</ul>\n<h3 id=\"国内\">国内</h3>\n\n<ul>\n<li><strong>恒为科技 4.67 亿元收购数珩科技 51% 股权</strong>（6月23日）— 补齐\"算力底座+AI模型+场景应用\"全产业链，标的承诺 2026-2028 累计净利不低于 2.82 亿元。<a href=\"https://www.cls.cn/detail/2407099\" target=\"_blank\" rel=\"noopener\">[财联社</a>]</li>\n<li><strong>光轮智能完成 10 亿元战略融资</strong>（6月23日）— 物理 AI 数据与评测基础设施，巨人网络、中关村科学城基金等参投。2025年营收增长 10 倍，合作方含英伟达、谷歌、字节、比亚迪。<a href=\"https://www.cnstock.com/commonDetail/732791\" target=\"_blank\" rel=\"noopener\">[中国证券网</a>]</li>\n<li><strong>影眸科技完成数亿元融资</strong>（6月23日）— 3D 生成大模型，凯辉基金、上海国投领投，字节、美团龙珠、红杉为历史股东。新产品上线首月 ARR 环比增速超 400%。<a href=\"https://finance.sina.com.cn/roll/2026-06-23/doc-iniekeey2079360.shtml\" target=\"_blank\" rel=\"noopener\">[新浪财经</a>]</li>\n<li><strong>昆仑行 90 天内三轮融资累计数十亿元</strong>（6月23日）— 通用人形机器人，高榕、高瓴、中科创星等参投。<a href=\"https://en.jiemian.com/article/14631088.html\" target=\"_blank\" rel=\"noopener\">[界面新闻</a>]</li>\n<li><strong>凌川科技完成数亿元 A+ 轮</strong>（6月23日）— AI 视频与多模态芯片，北京市 AI 基金与快手联合发起。<a href=\"https://dahecube.com/article.html?artid=278001\" target=\"_blank\" rel=\"noopener\">[大河财立方</a>]</li>\n<li><strong>正行创新近 1 亿美元天使轮</strong>（6月23日）— 具身智能/世界动作模型，CP集团、华勤科技等参投。<a href=\"https://eu.36kr.com/en/newsflashes/3865134271599874\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n</ul>\n\n<h2 id=\"市场动态\">📊 市场动态</h2>\n\n<ul>\n<li><strong>全球 AI 概念股暴跌</strong>（6月23日）— 韩国 KOSPI 暴跌 10% 触发熔断，费城半导体指数跌 7.6%，SpaceX 跌 16% 蒸发 $4000 亿。触发因素：B200 GPU 租赁价三周跌 30% → 市场质疑\"算力稀缺\"定价。叠加腾讯 Token 额度压缩、微软取消第三方 Claude Code 授权。<a href=\"https://www.21jingji.com/article/20260623/herald/d304f50bfa29bfd7e4895fd6e3fbc0af.html\" target=\"_blank\" rel=\"noopener\">[21经济</a>]</li>\n<li><strong>智谱市值盘中突破万亿港元</strong>（6月23日）— 港股盘中触 1.27 万亿港元，年内涨超 2000%。GLM-5.2 被列入\"新御三家\"，MaaS ARR 17 亿元（年增 60 倍）。<a href=\"https://www.tmtpost.com/8036661.html\" target=\"_blank\" rel=\"noopener\">[钛媒体</a>]</li>\n</ul>\n\n<h2 id=\"精选文章\">📖 精选文章</h2>\n\n<h3 id=\"英文深度源\">英文深度源</h3>\n\n<ul>\n<li><strong><a href=\"https://stratechery.com/2026/the-stuff-of-mythos/\" target=\"_blank\" rel=\"noopener\">The Stuff of Myth(os)</a></strong>（Stratechery, Ben Thompson）— 深度拆解 Anthropic Fable 5/Mythos 5 发布与美国出口管制博弈。<a href=\"https://stratechery.com/2026/the-stuff-of-mythos/\" target=\"_blank\" rel=\"noopener\">[Stratechery</a>]</li>\n<li><strong><a href=\"https://fortune.com/2026/06/23/cohere-ceo-sovereign-ai-anthropic-mythos-national-security-risk/\" target=\"_blank\" rel=\"noopener\">Renting AI from foreign providers is a national security risk</a></strong>（Fortune, 6月23日）— Cohere CEO 提出\"主权 AI\"概念，警示依赖外国 AI 的结构性风险。<a href=\"https://fortune.com/2026/06/23/cohere-ceo-sovereign-ai-anthropic-mythos-national-security-risk/\" target=\"_blank\" rel=\"noopener\">[Fortune</a>]</li>\n</ul>\n<h3 id=\"中文公众号网站\">中文公众号/网站</h3>\n\n<ul>\n<li><strong><a href=\"https://w.geekpark.net/news/366371\" target=\"_blank\" rel=\"noopener\">微信推了 AI 助手「小微」，它会成为 AI 大模型的战场吗？</a></strong>（极客公园，6月23日）— 深度分析微信原生 AI 助手的产品逻辑和生态影响：WeLM（MoE 80B）+ DeepSeek 兜底。<a href=\"https://w.geekpark.net/news/366371\" target=\"_blank\" rel=\"noopener\">[极客公园</a>]</li>\n<li><strong><a href=\"http://www.geekpark.net/news/366304\" target=\"_blank\" rel=\"noopener\">美国版「幻方量化」，没做 DeepSeek，但押注 Anthropic 爆赚 50 倍</a></strong>（极客公园，6月23日）— 拆解美国量化基金通过早期投资 Anthropic 获 50 倍回报，少见的\"投资回报\"视角。<a href=\"http://www.geekpark.net/news/366304\" target=\"_blank\" rel=\"noopener\">[极客公园</a>]</li>\n<li><strong><a href=\"https://finance.sina.cn/2026-06-23/detail-inieixxc8837803.d.html\" target=\"_blank\" rel=\"noopener\">给 AI 看的「P 站」，藏着关于「人与 AI」最大的讽刺</a></strong>（极客公园，6月23日新浪转载）— 从 MoltHub 讽刺项目切入，讨论 Anthropic Claude 宪法、OpenAI 人格团队、xAI AI 女友。<a href=\"https://finance.sina.cn/2026-06-23/detail-inieixxc8837803.d.html\" target=\"_blank\" rel=\"noopener\">[新浪</a>]</li>\n<li><strong><a href=\"https://www.panewslab.com/en/articles/019eeed2-84ea-73e9-9430-70528876a377\" target=\"_blank\" rel=\"noopener\">AI 巨头的「Token 补贴战」快打完了？</a></strong>（极客公园，6月23日）— 分析 Google 降价对 OpenAI 和 Anthropic 商业模式的冲击。<a href=\"https://www.panewslab.com/en/articles/019eeed2-84ea-73e9-9430-70528876a377\" target=\"_blank\" rel=\"noopener\">[PANews</a>]</li>\n<li><strong><a href=\"https://m.sohu.com/a/1040531841_122074763\" target=\"_blank\" rel=\"noopener\">深度｜世界模型的五大学派：华人学者正在撑起全球 AI 下一战的半壁江山</a></strong>（Z Finance，6月23日）— 系统梳理世界模型五条技术路线，拆解各学派核心假设和代表人物。<a href=\"https://m.sohu.com/a/1040531841_122074763\" target=\"_blank\" rel=\"noopener\">[搜狐</a>]</li>\n<li><strong><a href=\"https://www.sohu.com/a/1040393760_129720\" target=\"_blank\" rel=\"noopener\">战胜 Mythos 5，OpenAI 安全专用 GPT-5.5-Cyber 完全体来了</a></strong>（机器之心，6月23日搜狐转载）— CyberGym 得分 85.6%，超 GPT-5.5 和 Mythos 5，同步发布 Codex Security 插件。<a href=\"https://www.sohu.com/a/1040393760_129720\" target=\"_blank\" rel=\"noopener\">[搜狐</a>]</li>\n<li><strong><a href=\"https://www.163.com/dy/article/L04MCDGE0511AQHO.html\" target=\"_blank\" rel=\"noopener\">LeCun、谢赛宁转发的世界模型与 VLA 共融方案：VLA-JEPA</a></strong>（机器之心，6月23日163转载）— 中科大+中关村学院联合提出，仅用 13 条轨迹完成装配，已开源。<a href=\"https://www.163.com/dy/article/L04MCDGE0511AQHO.html\" target=\"_blank\" rel=\"noopener\">[163</a>]</li>\n<li><strong><a href=\"https://36kr.com/p/3865437060158724\" target=\"_blank\" rel=\"noopener\">生物学的 EDA 时刻来了！</a></strong>（机器之心，6月23日36氪转载）— 恩和科技发布 BPL 生物学协议语言，LLM×编译器闭环自校正，首通率 82.3%。<a href=\"https://36kr.com/p/3865437060158724\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n<li><strong><a href=\"https://www.qbitai.com/2026/06/437382.html\" target=\"_blank\" rel=\"noopener\">机器人全栈操作系统！老黄率先抛出「具身版安卓」</a></strong>（量子位，6月23日）— 英伟达发布机器人全栈 OS。<a href=\"https://www.qbitai.com/2026/06/437382.html\" target=\"_blank\" rel=\"noopener\">[量子位</a>]</li>\n<li><strong><a href=\"https://www.qbitai.com/2026/06/437340.html\" target=\"_blank\" rel=\"noopener\">马斯克又盯上 AI 基建：特斯拉要卖「算力积木」了</a></strong>（量子位，6月23日）— 特斯拉推出模块化 AI 算力方案。<a href=\"https://www.qbitai.com/2026/06/437340.html\" target=\"_blank\" rel=\"noopener\">[量子位</a>]</li>\n<li><strong><a href=\"https://www.qbitai.com/2026/06/437672.html\" target=\"_blank\" rel=\"noopener\">云计算一哥，让小鹏、Kimi 和猎豹都爽了一把</a></strong>（量子位，6月23日）— 阿里云 AI 基础设施客户案例深度报道。<a href=\"https://www.qbitai.com/2026/06/437672.html\" target=\"_blank\" rel=\"noopener\">[量子位</a>]</li>\n<li><strong><a href=\"https://www.qbitai.com/2026/06/437330.html\" target=\"_blank\" rel=\"noopener\">小扎「蒸馏员工」计划紧急喊停！私聊数据都泄露了</a></strong>（量子位，6月23日）— Meta MCI 项目因 4.5 万张数据表权限错误导致隐私泄露。<a href=\"https://www.qbitai.com/2026/06/437330.html\" target=\"_blank\" rel=\"noopener\">[量子位</a>]</li>\n<li><strong><a href=\"https://www.sohu.com/a/1040125112_473283\" target=\"_blank\" rel=\"noopener\">超越 Claude Mythos 的 AI 模型，诞生了？</a></strong>（新智元，6月23日搜狐转载）— Sakana AI 发布 Fugu Ultra 多智能体调度系统，\"大模型将去，调度为王\"。<a href=\"https://www.sohu.com/a/1040125112_473283\" target=\"_blank\" rel=\"noopener\">[搜狐</a>]</li>\n<li><strong><a href=\"https://www.36kr.com/p/3864888305636360\" target=\"_blank\" rel=\"noopener\">「AI 几小时攻破 NSA」刷屏，真相竟是一场红队演习？</a></strong>（新智元，6月23日36氪转载）— 澄清 Mythos 攻破 NSA 实为授权红队演练，Mythos 仅存活 72 小时即被出口管制令下线。<a href=\"https://www.36kr.com/p/3864888305636360\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n<li><strong><a href=\"https://36kr.com/p/3865676543972360\" target=\"_blank\" rel=\"noopener\">刚刚，物理世界的 Anthropic 现身，团队来自中国</a></strong>（新智元，6月23日36氪转载）— Momenta 通过港交所聆讯，被称为\"物理世界的 Anthropic\"。<a href=\"https://36kr.com/p/3865676543972360\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n<li><strong><a href=\"https://36kr.com/p/3865123828093957\" target=\"_blank\" rel=\"noopener\">OpenAI 祭出满血 GPT-5.5-Cyber，Codex 却被曝史诗级 bug</a></strong>（新智元，6月23日36氪转载）— Codex 被发现一年写入 640TB 足以写废 SSD。<a href=\"https://36kr.com/p/3865123828093957\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n<li><strong><a href=\"https://news.qq.com/rain/a/20260622Q0EL2K00\" target=\"_blank\" rel=\"noopener\">业余语言学家用 Claude Code 破译线形文字 A</a></strong>（新智元，6月23日腾讯新闻转载）— 408 个词条、40 个音值、9 页语法手稿，正由剑桥和罗格斯大学专家审核。<a href=\"https://news.qq.com/rain/a/20260622Q0EL2K00\" target=\"_blank\" rel=\"noopener\">[腾讯新闻</a>]</li>\n<li><strong><a href=\"https://www.163.com/dy/article/L03QG2G105119734.html\" target=\"_blank\" rel=\"noopener\">独家｜姚颂三度创业，获近亿美元融资入局物理智能</a></strong>（DeepTech深科技，6月23日163转载）— 34岁姚颂创立 Striding AI，LaWAM 模型任务成功率 98.6%。<a href=\"https://www.163.com/dy/article/L03QG2G105119734.html\" target=\"_blank\" rel=\"noopener\">[163</a>]</li>\n<li><strong><a href=\"https://www.huxiu.com/article/4869447.html\" target=\"_blank\" rel=\"noopener\">实测微信 AI 助手「小微」：12 个场景看懂它的能力和边界</a></strong>（硅星人Pro，6月23日虎嗅转载）— 对微信小微的全场景实测，涵盖聊天、红包、朋友圈、小程序、支付。<a href=\"https://www.huxiu.com/article/4869447.html\" target=\"_blank\" rel=\"noopener\">[虎嗅</a>]</li>\n<li><strong>特工宇宙、elsewhere 今日文章未被搜索引擎收录。</strong></li>\n</ul>\n\n<h2 id=\"今日重点\">📌 今日重点</h2>\n\n<h3 id=\"1-豆包-21-发布国产大模型跨越生产级质变点\">1. 豆包 2.1 发布——国产大模型跨越「生产级质变点」</h3>\n\n<p>6月23日的火山引擎 FORCE 大会是当日最重要事件。豆包 2.1 Pro 在 Coding、Agent、VLM 三个方向首次跨越\"质变点\"，芯片设计 RTL 测试连续运行近 18 小时即为力证。关键数字：日均 Token 180 万亿（两年 1500 倍）、MaaS 份额 49.5%、成本为 Claude 的 1/5。这已不只是\"模型跑分\"级别的竞争，而是进入了\"谁能进企业生产线\"的阶段。</p>\n\n<h3 id=\"2-全球-ai-股暴跌算力叙事遭遇-roi-拷问\">2. 全球 AI 股暴跌——算力叙事遭遇 ROI 拷问</h3>\n\n<p>同日，全球 AI 概念股重挫。导火索是 B200 GPU 租赁价三周跌 30%，深层是市场从\"先烧钱占坑\"切换到\"回报在哪\"的拷问。云巨头 2026 年 $7250 亿 AI 资本开支的回报成为最大问号。这轮调整的正面意义是：它正在把行业从\"叙事驱动\"拉回\"价值检验\"。</p>\n\n<h3 id=\"3-ai-安全与治理从技术问题升级为国家议题\">3. AI 安全与治理——从技术问题升级为国家议题</h3>\n\n<p>6月23日同一天，三条独立但相关的消息：五眼联盟 AI 网络攻击警告、联合国要求 AI 公司公开环境成本、Cohere CEO 呼吁\"主权 AI\"。AI 的讨论框架正在从\"能做多大\"转向\"谁来管、怎么管、代价谁承担\"。</p>\n\n\n<blockquote>\n<p>自动生成于 2026-06-23 晚间 | 所有条目仅收录 6月23日当日发布 | 下次更新：2026-06-24 晚 9:07</p>\n</blockquote>\n"};
+const IMAGES = {"https://www.eurekalert.org/news-releases/1132795": "https://www.eurekalert.org/images/EurekAlert-bluebg_Twitter_601X601.png", "https://www.webpronews.com/small-models-big-reasoning-how-vibethinker-3b-challenges-the-scale-first-orthodoxy/": "https://www.webpronews.com/wp-content/uploads/2023/07/newlogotest.png", "https://www.techwalker.com/2026/0623/3191354.shtml": "https://icon.zhiding.cn/nd/tk/v.1.2.0/img/logo2.8e3ef7d.png", "https://www.pakistantoday.com.pk/2026/06/23/un-chief-urges-ai-firms-to-disclose-environmental-costs": "https://i.tribune.com.pk/media/images/antonio1782226051-0/antonio1782226051-0.jpg", "https://fortune.com/2026/06/23/cohere-ceo-sovereign-ai-anthropic-mythos-national-security-risk/": "https://fortune.com/img-assets/wp-content/uploads/2026/06/GettyImages-2272194124-e1782212868724.jpg?resize=1200,600", "https://m.163.com/dy/article/L04GF29D0511AQHO.html": "https://nimg.ws.126.net/?url=http%3A%2F%2Fdingyue.ws.126.net%2F2026%2F0623%2F7b742481j00th2ux70015d000u000eum.jpg&thumbnail=750x2147483647&quality=75&type=jpg", "http://www.bjnews.com.cn/detail/1782214513129479.html": "https://static.bjnews.com.cn/www/v6/images/footer032.png", "https://stcn.com/article/detail/3974239.html": "https://static-web.stcn.com/static/images/zqsb.png", "https://www.aoyii.com/ai-morning-20260623": "https://www.aoyii.com/wp-content/uploads/2026/04/1777172739-robot1_Logo.png", "https://www.advfn.com/stock-market/stock-news/98794017/justai-raises-17m-series-a-to-build-an-agentic-ma": "https://images.advfn.com/sales/adhoc/search/BNR24-763_IBKR_Desktop_300x600_-_A_-US.jpg", "https://www.cls.cn/detail/2407099": "https://cdnjs.cls.cn/www/20200601/image/telegraph-logo.png", "https://www.cnstock.com/commonDetail/732791": "https://image.cnstock.com/cnstock/static/default/app_download.png", "https://finance.sina.com.cn/roll/2026-06-23/doc-iniekeey2079360.shtml": "//n.sinaimg.cn/default/feedbackpics/transform/116/w550h366/20180418/SsL9-fzihnep5208585.png", "https://en.jiemian.com/article/14631088.html": "https://res.jiemian.com/assets/jmen/pc/index/img/top_jmlogo@2x.png", "https://dahecube.com/article.html?artid=278001": "https://res.dahecube.com/nweb/res/pc/img/logo.png", "https://www.21jingji.com/article/20260623/herald/d304f50bfa29bfd7e4895fd6e3fbc0af.html": "https://static.21jingji.com/web_fed/images/logo.png", "https://www.tmtpost.com/8036661.html": "https://images.tmtpost.com/uploads/images/zhaopian/nuxtpic/change_logo3/og_image.png", "https://w.geekpark.net/news/366371": "https://imgslim.geekpark.net/uploads/image/file/c8/d7/c8d76b0582a685878cee020e669f9437.png", "https://finance.sina.cn/2026-06-23/detail-inieixxc8837803.d.html": "https://n.sinaimg.cn/spider20260623/47/w1080h567/20260623/1bbf-8325bb214e49fdf509bbf119d1df415a.jpg", "https://www.panewslab.com/en/articles/019eeed2-84ea-73e9-9430-70528876a377": "https://uploads.panewslab.com/67906e69-b9b0-491e-9c94-d82ad31c74d1", "https://m.sohu.com/a/1040531841_122074763": "https://q5.itc.cn/q_70,c_zoom,w_500//images03/20260623/72e62569e4114c23b9b20351a3661350.jpeg", "https://www.sohu.com/a/1040393760_129720": "//q8.itc.cn/images01/20260623/0f4c8241eba2460d8616a9e63528e03f.jpeg", "https://www.qbitai.com/2026/06/437382.html": "https://www.qbitai.com/wp-content/uploads/imgs/qbitai-logo-1.png", "https://www.qbitai.com/2026/06/437340.html": "https://www.qbitai.com/wp-content/uploads/imgs/qbitai-logo-1.png", "https://www.qbitai.com/2026/06/437672.html": "https://www.qbitai.com/wp-content/uploads/imgs/qbitai-logo-1.png", "https://www.qbitai.com/2026/06/437330.html": "https://www.qbitai.com/wp-content/uploads/imgs/qbitai-logo-1.png", "https://www.sohu.com/a/1040125112_473283": "https://q4.itc.cn/q_70/images03/20260623/7cc175f420dc46af9eb4f5ab76a1d49a.png"};
 
 const navList = document.getElementById('navList');
 const main = document.getElementById('main');
+const toc = document.getElementById('toc');
+const tocLinks = document.getElementById('tocLinks');
+const imgPreview = document.getElementById('imgPreview');
 
+// ── Nav ──
 function renderNav() {
   const dates = Object.keys(BRIEFINGS).sort().reverse();
-  navList.innerHTML = dates.map((date, i) => `
-    <li>
-      <a href="#${date}" class="${i === 0 ? 'active' : ''}"
-         onclick="showBriefing('${date}'); return false;">
-        <span class="date-badge">${formatDate(date)}</span>
-        ${getDayLabel(date)}
-      </a>
-    </li>
-  `).join('');
+  navList.innerHTML = dates.map((d, i) => {
+    const dt = new Date(d + 'T00:00:00');
+    const mmdd = String(dt.getMonth()+1).padStart(2,'0') + '/' + String(dt.getDate()).padStart(2,'0');
+    const days = ['周日','周一','周二','周三','周四','周五','周六'];
+    return `<li><a href="#${d}" class="${i===0?'active':''}" onclick="showBriefing('${d}');return false">
+      <span class="date-badge">${mmdd}</span>${days[dt.getDay()]}</a></li>`;
+  }).join('');
 }
 
-function formatDate(dateStr) {
-  const d = new Date(dateStr + 'T00:00:00');
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  return `${mm}/${dd}`;
+// ── Build ToC ──
+function buildToc() {
+  const headings = main.querySelectorAll('h2[id], h3[id]');
+  tocLinks.innerHTML = Array.from(headings).map(h => {
+    const tag = h.tagName.toLowerCase();
+    return `<a href="#${h.id}" style="padding-left:${tag==='h3'?'16px':'8px'}">${h.textContent}</a>`;
+  }).join('');
+
+  // Highlight on scroll
+  const links = tocLinks.querySelectorAll('a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      const id = e.target.id;
+      const link = tocLinks.querySelector(`a[href="#${id}"]`);
+      if (e.isIntersecting && link) {
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-80px 0px -70% 0px' });
+  headings.forEach(h => observer.observe(h));
 }
 
-function getDayLabel(dateStr) {
-  const d = new Date(dateStr + 'T00:00:00');
-  const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-  return days[d.getDay()];
+// ── Toggle sections ──
+function initSections() {
+  main.querySelectorAll('.section-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const section = header.parentElement;
+      const wasOpen = section.classList.contains('open');
+      section.classList.toggle('open');
+      // Scroll to section if opening
+      if (!wasOpen && section.querySelector('h2')) {
+        setTimeout(() => section.querySelector('h2').scrollIntoView({behavior:'smooth',block:'start'}), 100);
+      }
+    });
+  });
+  // Open first two sections by default
+  const sections = main.querySelectorAll('.section');
+  sections.forEach((s, i) => { if (i < 2) s.classList.add('open'); });
+}
+
+// ── Image hover preview ──
+function initImagePreviews() {
+  main.querySelectorAll('a[href]').forEach(a => {
+    const url = a.getAttribute('href');
+    if (!url || !url.startsWith('http')) return;
+    // Check if this URL has an associated image
+    const img = IMAGES[url];
+    if (!img) return;
+    a.addEventListener('mouseenter', () => {
+      imgPreview.src = img;
+      imgPreview.style.display = 'block';
+    });
+    a.addEventListener('mouseleave', () => {
+      imgPreview.style.display = 'none';
+    });
+  });
+}
+
+// ── Render briefing ──
+function wrapSections(html) {
+  // Wrap h2 + following content into <div class="section">
+  // Simple approach: split by <h2, wrap each
+  let result = html;
+  // Match h2 with optional id, followed by content until next h2 or end
+  result = result.replace(/(<h2[^>]*>.*?<\/h2>)((?:(?!<h2[^>]*>)[\s\S])*?)(?=<h2[^>]*>|$)/gi, (match, h2, body) => {
+    const isOpen = body.includes('id="') && (body.includes('科研学术') || body.includes('产品应用'));
+    return `<div class="section"><div class="section-header">${h2}<span class="section-arrow">▶</span></div><div class="section-body">${body}</div></div>`;
+  });
+  return result;
 }
 
 function showBriefing(date) {
-  // Update nav active state
   navList.querySelectorAll('a').forEach(a => a.classList.remove('active'));
   const link = navList.querySelector(`a[href="#${date}"]`);
   if (link) link.classList.add('active');
 
-  // Render content
-  const html = BRIEFINGS[date];
-  if (html) {
-    main.innerHTML = `<div class="briefing">${html}</div>`;
-    // Scroll to top
-    main.scrollTop = 0;
-    window.scrollTo(0, 0);
+  let html = BRIEFINGS[date];
+  if (!html) {
+    main.innerHTML = '<div style="text-align:center;padding:80px">未找到该日期日报</div>';
+    return;
   }
+
+  // Inject images into article links
+  html = injectImages(html);
+
+  // Wrap sections
+  html = wrapSections(html);
+
+  main.innerHTML = `<div class="briefing">${html}</div>`;
+
+  initSections();
+  initImagePreviews();
+  buildToc();
+  main.scrollTop = 0;
+  window.scrollTo(0, 0);
+
+  // Show ToC after a brief delay
+  setTimeout(() => toc.classList.add('visible'), 400);
 }
 
-// Show latest on load
+function injectImages(html) {
+  // Find <li> items with <a> links and add thumbnail if image exists
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  div.querySelectorAll('li').forEach(li => {
+    const a = li.querySelector('a[href]');
+    if (!a) return;
+    const url = a.getAttribute('href');
+    const img = IMAGES[url];
+    if (!img) return;
+
+    // Check if this is a long-form article (has <strong>)
+    const hasStrong = li.querySelector('strong');
+    if (hasStrong) {
+      // Wrap in card layout
+      const content = li.innerHTML;
+      li.innerHTML = `<div class="article-card">
+        <img class="card-img" src="${img}" loading="lazy" onerror="this.style.display='none'">
+        <div class="card-body">${content}</div>
+      </div>`;
+      li.style.listStyle = 'none';
+    }
+  });
+
+  return div.innerHTML;
+}
+
+// ── Init ──
 document.addEventListener('DOMContentLoaded', () => {
   renderNav();
   const dates = Object.keys(BRIEFINGS).sort().reverse();
-  if (dates.length > 0) {
-    showBriefing(dates[0]);
-  }
+  if (dates.length > 0) showBriefing(dates[0]);
+
+  // Hide ToC when scrolling past the briefing
+  let tocTimer;
+  window.addEventListener('scroll', () => {
+    clearTimeout(tocTimer);
+    toc.classList.add('visible');
+    tocTimer = setTimeout(() => {
+      if (window.scrollY < 200) toc.classList.remove('visible');
+    }, 3000);
+  });
 });
 
-// Handle hash-based navigation
 window.addEventListener('hashchange', () => {
   const date = window.location.hash.slice(1);
-  if (date && BRIEFINGS[date]) {
-    showBriefing(date);
-  }
+  if (date && BRIEFINGS[date]) showBriefing(date);
 });
 </script>
-
 </body>
 </html>
