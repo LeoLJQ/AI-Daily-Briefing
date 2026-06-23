@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 行业日报</title>
+<style>
+  :root {
+    --bg: #f5f3f0;
+    --sidebar-bg: #1a1a2e;
+    --sidebar-text: #b0b0c0;
+    --sidebar-active: #ffffff;
+    --sidebar-hover: #2a2a4e;
+    --card-bg: #ffffff;
+    --text: #2c2c2c;
+    --text-secondary: #6b6b6b;
+    --accent: #3b82f6;
+    --accent-dim: #2563eb;
+    --border: #e5e5e5;
+    --tag-bg: #eff6ff;
+    --tag-text: #3b82f6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
+      sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+  nav {
+    width: 260px;
+    min-width: 260px;
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+    overflow-y: auto;
+  }
+
+  .nav-header {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .nav-header h1 {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .nav-header .subtitle {
+    font-size: 12px;
+    color: var(--sidebar-text);
+    margin-top: 4px;
+  }
+
+  .nav-list {
+    flex: 1;
+    padding: 8px 0;
+    list-style: none;
+  }
+
+  .nav-list li a {
+    display: block;
+    padding: 10px 24px;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.15s ease;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+  }
+
+  .nav-list li a:hover {
+    background: var(--sidebar-hover);
+    color: #ddd;
+  }
+
+  .nav-list li a.active {
+    color: var(--sidebar-active);
+    background: rgba(59, 130, 246, 0.15);
+    border-left-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .nav-list li a .date-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 11px;
+    margin-right: 8px;
+  }
+
+  .nav-footer {
+    padding: 16px 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 11px;
+    color: #666;
+  }
+
+  /* ── Main content ── */
+  main {
+    margin-left: 260px;
+    flex: 1;
+    padding: 32px 40px;
+    max-width: 900px;
+  }
+
+  .briefing {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 40px 48px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    line-height: 1.8;
+  }
+
+  .briefing h1 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .briefing h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 36px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .briefing h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    color: #444;
+  }
+
+  .briefing p {
+    margin-bottom: 12px;
+  }
+
+  .briefing ul {
+    margin: 8px 0 16px 0;
+    padding-left: 20px;
+  }
+
+  .briefing li {
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+
+  .briefing li strong {
+    color: #1a1a2e;
+  }
+
+  .briefing strong {
+    font-weight: 600;
+  }
+
+  .briefing a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 13px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+
+  .briefing a:hover {
+    border-bottom-color: var(--accent);
+  }
+
+  .briefing hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .briefing blockquote {
+    margin: 16px 0;
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .briefing code {
+    background: #f1f3f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+
+  .briefing table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+
+  .briefing th {
+    background: #f8f9fa;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .briefing td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .briefing tr:hover td {
+    background: #fafbfc;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-secondary);
+  }
+
+  .empty-state .icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .empty-state h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: var(--text);
+    border: none;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    nav {
+      width: 100%;
+      min-width: unset;
+      height: auto;
+      position: relative;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .nav-list {
+      display: flex;
+      overflow-x: auto;
+    }
+    .nav-list li a {
+      white-space: nowrap;
+      border-left: none;
+      border-bottom: 3px solid transparent;
+      padding: 10px 16px;
+    }
+    main {
+      margin-left: 0;
+      padding: 16px;
+    }
+    .briefing {
+      padding: 24px 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-header">
+    <h1>📊 AI 行业日报</h1>
+    <div class="subtitle">每日自动更新 · 科研 · 产品 · 融资</div>
+  </div>
+  <ul class="nav-list" id="navList">
+    <li><a href="#2026-06-24" onclick="showBriefing('2026-06-24');return false"><span class="date-badge">06/24</span>周二</a></li>
+  </ul>
+  <div class="nav-footer">共 1 期 | 自动生成于 2026-06-24 00:10</div>
+</nav>
+
+<main id="main">
+  <div class="empty-state">
+    <div class="icon">📭</div>
+    <h2>选择日期查看日报</h2>
+    <p>左侧列表中选择一个日期</p>
+  </div>
+</main>
+
+<script>
+// All briefing data embedded at build time
+const BRIEFINGS = {"2026-06-24": "<h1>AI 行业日报 — 2026-06-24</h1>\n\n<hr>\n\n<h2>🔬 科研学术</h2>\n\n<h3>国际</h3>\n\n<ul>\n<li><strong>A-Evolve-Training：30B 模型实现自主后训练</strong> — 系统在无人干预下跨越多轮、数周时间自主训练 30B Nemotron 模型，在 NVIDIA Nemotron-Reasoning Challenge（约 4000 支队伍）中排名第 8，且能自我检测 dev 指标失效并自动修正搜索策略。<a href=\"https://arxiv.org/abs/2606.20657\" target=\"_blank\" rel=\"noopener\">[arXiv</a>]</li>\n<li><strong>Divide-and-Denoise：博弈论驱动扩散模型组合</strong> — 提出通过公平分配博弈协调多个预训练扩散模型的方法，在 GenEval 上超越基线，解决了多对象生成中丢对象、属性错配等常见失败。<strong>入选 ICML 2026 Spotlight</strong>。<a href=\"https://arxiv.org/abs/2606.14756\" target=\"_blank\" rel=\"noopener\">[arXiv</a>]</li>\n<li><strong>Latent Thought Flow：绕过语言瓶颈的高效推理</strong> — 将推理建模为连续空间中的变长轨迹，使用连续 GFlowNet 替代 Chain-of-Thought。准确率提升 9.5%，推理长度缩减 27.2%。<a href=\"https://arxiv.org/abs/2606.16222\" target=\"_blank\" rel=\"noopener\">[arXiv</a>]</li>\n<li><strong>LLM Self-Recognition：模型自我识别激活签名</strong> — LLM 可通过内部激活签名以 98%+ 准确率识别自己生成的文本，并提出基于随机稀疏向量的多模型身份标注方法，无质量下降。<strong>入选 ICML 2026</strong>。<a href=\"https://arxiv.org/abs/2606.06315\" target=\"_blank\" rel=\"noopener\">[arXiv</a>]</li>\n<li><strong>Solipsistic Superintelligence is Unlikely to be Cooperative</strong> — 论证以\"唯我论\"范式设计的 AI 不太可能具备合作性，呼吁将相互依赖和人类能动性作为 AI 设计的核心原则。<strong>入选 ICML 2026</strong>。<a href=\"https://arxiv.org/abs/2606.03237\" target=\"_blank\" rel=\"noopener\">[arXiv</a>]</li>\n</ul>\n<h3>国内</h3>\n\n<ul>\n<li><strong>Spatial-TTT：清华开源空间智能模型，仅 2B 参数超越 GPT-5 等闭源模型</strong> — 将 Test-Time Training 引入多模态空间理解，支持 120 分钟流式视频处理，模型在观看过程中持续更新内部空间记忆。<strong>入选 ECCV 2026</strong>。<a href=\"https://www.36kr.com/p/3863982653051912\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n<li><strong>IMR-LLM 获 ICRA 2026 最佳论文：自然语言驱动机器人自主规划</strong> — 深圳大学联合中科院等机构，用自然语言描述任务即可自动生成多机器人调度方案和可执行代码，覆盖 23 个真实工业场景。<a href=\"https://36kr.com/p/3865676527785223\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n<li><strong>BabelTele：\"AI 专用语言\"压缩文本至 27.9% 仍保留 99.5% 语义</strong> — 上海交大等五校联合，融合多语言词汇、数学符号和逻辑运算符形成高密度\"模型原生语言\"。<a href=\"https://www.ithome.com/0/966/529.htm\" target=\"_blank\" rel=\"noopener\">[IT之家</a>]</li>\n<li><strong>清华 UniCM 登 Nature Machine Intelligence：统一气候模态预测</strong> — 首次在统一框架下同时预测 7 个关键气候模态，ENSO 有效预测提前至 19 个月。<a href=\"https://www.36kr.com/p/3865396496864515\" target=\"_blank\" rel=\"noopener\">[36氪</a>]</li>\n<li><strong>哈工大 TPAMI 双发：任务驱动神经元 + 领域自适应新框架</strong> — 提出向量化符号回归让神经元按任务自适应选择最优数学表达；将领域自适应转化为固定特征空间中的决策边界优化问题。<a href=\"http://math.hit.edu.cn/2026/0622/c10315a394654/page.htm\" target=\"_blank\" rel=\"noopener\">[哈工大</a>]</li>\n</ul>\n<hr>\n\n<h2>🚀 产品应用</h2>\n\n<h3>国际</h3>\n\n<ul>\n<li><strong>Anthropic 发布 Claude Fable 5 / Mythos 5（6月10日）</strong> — Fable 5 在基准测试中比 Claude Opus 4.8 高出 10%+，定价 $10/M 输入 token、$50/M 输出 token。Mythos 5 面向企业，增强网络安全和生物安全防护。<a href=\"https://www.vietnam.vn/en/anthropic-ra-mat-sieu-ai-cho-nguoi-dung-pho-thong\" target=\"_blank\" rel=\"noopener\">[来源</a>]</li>\n<li><strong>Microsoft Build 2026：7 款自研 MAI 模型 + Agent 365 正式上线</strong> — MAI-Thinking-1（首个推理模型 ~35B）、MAI-Code-1-Flash 等 7 款模型发布；Agent 365 定价 $15/用户/月正式商用；Azure Cobalt 200 Arm VM 进入早期访问。GPT-5.5 同步在 Microsoft Foundry 上线。<a href=\"https://www.nasdaq.com/articles/microsoft-deepens-agentic-ai-push-and-collaborations-whats-ahead\" target=\"_blank\" rel=\"noopener\">[Nasdaq</a>]</li>\n<li><strong>Meta 智能眼镜 $299 起售（6月23日）</strong> — 与 EssilorLuxottica 联合推出，搭载 Muse Spark AI，支持免提拍摄、20 种语言实时翻译、8+ 小时续航，含 Kylie Jenner 联名款。<a href=\"https://indianexpress.com/article/technology/artificial-intelligence/meta-launches-ai-smart-glasses-from-299-kylie-jenner-edition-unveiled-10754011/\" target=\"_blank\" rel=\"noopener\">[Indian Express</a>]</li>\n<li><strong>Google Gemini 智能音箱 6月25日开售，$100</strong> — 深度集成 Gemini for Home，支持自由对话式 AI 交互、空间音频，附赠 6 个月 Home Premium。<a href=\"https://www.mercurynews.com/2026/06/17/googles-gemini-powered-ai-home-speaker-goes-on-sale-june-25/\" target=\"_blank\" rel=\"noopener\">[Mercury News</a>]</li>\n</ul>\n<h3>国内</h3>\n\n<ul>\n<li><strong>苹果 WWDC26：Siri AI 全面重构（6月9日）</strong> — Siri 从语音控制升级为跨全平台 AI 助手，深度集成于 iPhone/iPad/Mac/Vision Pro，支持跨 App 执行复杂任务。接入 Gemini 并可自由切换 ChatGPT、Claude 等第三方模型。注意：初期不在欧盟和中国大陆提供。<a href=\"https://www.apple.com/hk/newsroom/2026/06/apple-unveils-next-generation-of-apple-intelligence-siri-ai-and-more/\" target=\"_blank\" rel=\"noopener\">[Apple</a>]</li>\n<li><strong>火山引擎 FORCE 大会：豆包 2.1 Pro/Turbo 发布（6月23日）</strong> — Coding、Agent、VLM 三大方向跨越\"质变点\"，多项评测超越 Claude Opus 4.6。日均 Token 调用量突破 180 万亿，年增长超 10 倍。Seedance 2.5 视频模型（30 秒原生视频）和 Seedream 5.0 Pro 图像模型同步亮相。使用成本约为 Claude Opus 4.6 的 1/5。<a href=\"http://www3.xinhuanet.com/tech/20260623/acd6f2f27fc34459a7d1684c03278431/c.html\" target=\"_blank\" rel=\"noopener\">[新华网</a>] <a href=\"https://www.ithome.com/0/967/314.htm\" target=\"_blank\" rel=\"noopener\">[IT之家</a>]</li>\n<li><strong>豆包 AI 手机二代即将发售</strong> — 努比亚与字节联合开发，支持跨应用语音操作（语音打车、发社交媒体等）。<a href=\"https://www.21jingji.com/article/20260623/herald/04b5f480c7bb043738365a65e73c04d5.html\" target=\"_blank\" rel=\"noopener\">[21经济</a>]</li>\n<li><strong>赛豆科技发布 AI 汽车品牌 AIVA</strong> — 联合火山引擎，搭载豆包大模型智能座舱，首款量产车 AIVA ME7 将于年内上市。<a href=\"https://finance.ifeng.com/c/8tq0agTmCCb\" target=\"_blank\" rel=\"noopener\">[凤凰财经</a>]</li>\n</ul>\n<hr>\n\n<h2>💰 融资进展</h2>\n\n<h3>国际</h3>\n\n<ul>\n<li><strong>Baseten 获 $15 亿融资，估值 $130 亿</strong> — AI 推理基础设施公司，帮助企业以更低成本运行和定制 AI 模型。Sands Capital、Wellington Management 领投，收入同比增长 20 倍，18 个月内第四次融资。<a href=\"https://m.economictimes.com/tech/artificial-intelligence/ai-startup-baseten-hits-13-billion-valuation-as-australias-blackbird-makes-record-bet/amp_articleshow/131923620.cms\" target=\"_blank\" rel=\"noopener\">[Economic Times</a>]</li>\n<li><strong>Odyssey 获 $3.1 亿 B 轮，估值 $14.5 亿</strong> — \"世界模型\"公司，为机器人、自动驾驶和仿真构建物理环境 AI。亚马逊、AMD Ventures、GV、Jeff Dean 等参投。<a href=\"https://www.moneycontrol.com/news/trends/odyssey-hits-1-45-billion-valuation-after-310-million-funding-round-backed-by-amazon-13953859.html\" target=\"_blank\" rel=\"noopener\">[Moneycontrol</a>]</li>\n<li><strong>Upscale AI 获 $1.9 亿 A-1 轮，估值 $20 亿</strong> — AI 芯片互联基础设施，Nvidia、Salesforce Ventures、淡马锡、Tiger Global 等参投。18 个月内累计融资 $5 亿，AMD、Intel、Google、Meta、Microsoft 均支持其开放标准。<a href=\"https://finance.yahoo.com/technology/ai/articles/upscale-ai-raises-190-million-145808719.html\" target=\"_blank\" rel=\"noopener\">[Yahoo Finance</a>]</li>\n<li><strong>Genspark.ai 获 $1 亿 B 轮扩展，估值 $26 亿</strong> — AI 工作空间平台，年化收入 $2.5 亿，6000+ 企业客户。<a href=\"https://au.finance.yahoo.com/news/genspark-ai-valued-2-6-132914723.html\" target=\"_blank\" rel=\"noopener\">[Yahoo Finance</a>]</li>\n<li><strong>SpaceX $600 亿估值换股收购 Cursor（Anysphere）</strong> — 全股交易，预计 Q3 2026 完成。SpaceX 上市后市值约 $2.66 万亿。<a href=\"https://www.caixin.com/2026-06-17/102454873.html\" target=\"_blank\" rel=\"noopener\">[财新</a>]</li>\n</ul>\n<h3>国内</h3>\n\n<ul>\n<li><strong>DeepSeek A 轮约 510 亿元</strong> — 基础大模型赛道最大单笔融资之一，估值未披露。<a href=\"https://finance.sina.com.cn/roll/2026-06-18/doc-inicvrtt2179759.shtml\" target=\"_blank\" rel=\"noopener\">[新浪财经</a>]</li>\n<li><strong>硅基流动 B 轮超 20 亿元</strong> — 生成式 AI 算力基础设施，携程、晶科、金蝶、中国联通等参投。<a href=\"https://www.caixin.com/2026-06-17/102454873.html\" target=\"_blank\" rel=\"noopener\">[财新</a>]</li>\n<li><strong>逆矩阵科技种子++轮超亿美元</strong> — 世界模型赛道，经纬创投等一线基金加注。<a href=\"https://stcn.com/article/detail/3967385.html\" target=\"_blank\" rel=\"noopener\">[证券时报</a>]</li>\n<li><strong>具身智能集体吸金</strong> — 章鱼动力（$5000 万）、觅蜂科技（数亿元）、大晓机器人（数亿元）、Manifold AI（近 10 亿元）等同月在具身智能赛道完成融资。产业资本（吉利、比亚迪、宁德时代、腾讯、蚂蚁）密集入场。<a href=\"https://www.cnstock.com/commonDetail/731139\" target=\"_blank\" rel=\"noopener\">[中国证券网</a>]</li>\n<li><strong>证监会扩科创板第五套至 AI 大模型</strong> — 智谱 AI 科创板 IPO 辅导验收，燧原科技过会。IPO 退出渠道打开。<a href=\"https://fund.eastmoney.com/a/202606113768639037.html\" target=\"_blank\" rel=\"noopener\">[东方财富</a>]</li>\n</ul>\n<hr>\n\n<h2>📌 今日重点</h2>\n\n<h3>1. 豆包 2.1 发布：国内大模型能力质变的信号</h3>\n\n<p>字节跳动在 6 月 23 日的 FORCE 大会上密集发布豆包 2.1 Pro/Turbo、视频模型 Seedance 2.5、图像模型 Seedream 5.0 Pro。核心看点不是参数，而是三个关键指标：① Coding 和 Agent 能力首次\"跨越质变点\"——此前这是国产模型与 Claude/GPT 差距最大的方向；② 日均 Token 调用量 180 万亿，说明已经在真实生产中大规模验证；③ 使用成本约为 Claude Opus 4.6 的 1/5，这个价差足以改变国内企业选型逻辑。从\"能用\"到\"好用且便宜\"，国内大模型竞争进入新阶段。</p>\n\n<h3>2. 具身智能 + 世界模型：资本正在押注\"AI 的下一站\"</h3>\n\n<p>本周国内外融资有一个共同主题——钱从\"聊天 AI\"流向\"物理 AI\"。Odyssey（$3.1 亿）、逆矩阵（超亿美元）、章鱼动力、觅蜂科技、大晓机器人……这些公司都不做聊天机器人，而是做机器人、自动驾驶、工业仿真需要的\"理解物理世界的 AI\"。产业资本的参与尤其值得关注——比亚迪、宁德时代、吉利不是财务投资，而是为自己的产线找技术。具身智能正在从实验室叙事变成产业需求。</p>\n\n<h3>3. AI Agent 成为产品竞争的主战场</h3>\n\n<p>苹果 Siri AI 重构、微软 Agent 365 商用、豆包强调 Agent 能力质变——三家几乎在同一周把 AI Agent 推到了产品化的前台。共同特征：跨应用执行任务、理解用户上下文、自主规划步骤。这意味着 AI 产品竞争从\"谁的模型更聪明\"进入\"谁的 Agent 真能干活\"。接下来关键看实际体验和落地速度——苹果受限地域合规，豆包受限生态闭环，微软有 Office 场景但定价不低。</p>\n\n<hr>\n\n<blockquote>\n<p>自动生成于 2026-06-24 | 基于 WebSearch 结果整理 | 下次更新：2026-06-25 8:07 AM</p>\n</blockquote>\n"};
+
+const navList = document.getElementById('navList');
+const main = document.getElementById('main');
+
+function renderNav() {
+  const dates = Object.keys(BRIEFINGS).sort().reverse();
+  navList.innerHTML = dates.map((date, i) => `
+    <li>
+      <a href="#${date}" class="${i === 0 ? 'active' : ''}"
+         onclick="showBriefing('${date}'); return false;">
+        <span class="date-badge">${formatDate(date)}</span>
+        ${getDayLabel(date)}
+      </a>
+    </li>
+  `).join('');
+}
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${mm}/${dd}`;
+}
+
+function getDayLabel(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  return days[d.getDay()];
+}
+
+function showBriefing(date) {
+  // Update nav active state
+  navList.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+  const link = navList.querySelector(`a[href="#${date}"]`);
+  if (link) link.classList.add('active');
+
+  // Render content
+  const html = BRIEFINGS[date];
+  if (html) {
+    main.innerHTML = `<div class="briefing">${html}</div>`;
+    // Scroll to top
+    main.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }
+}
+
+// Show latest on load
+document.addEventListener('DOMContentLoaded', () => {
+  renderNav();
+  const dates = Object.keys(BRIEFINGS).sort().reverse();
+  if (dates.length > 0) {
+    showBriefing(dates[0]);
+  }
+});
+
+// Handle hash-based navigation
+window.addEventListener('hashchange', () => {
+  const date = window.location.hash.slice(1);
+  if (date && BRIEFINGS[date]) {
+    showBriefing(date);
+  }
+});
+</script>
+
+</body>
+</html>
