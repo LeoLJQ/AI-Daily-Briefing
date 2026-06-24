@@ -67,6 +67,22 @@ ALLOWED_DOMAINS = {
     "eet-china.com",
     "ofweek.com", "mp.ofweek.com",
     "panewslab.com",
+    # v2 新增
+    "yna.co.kr",           # 韩联社
+    "toutiao.com",         # 今日头条
+    "techinasia.com",      # Tech in Asia
+    "finance.yahoo.com",   # Yahoo Finance
+    "leiphone.com",        # 雷锋网
+    "pedaily.cn",          # 投资界
+    "news.cn", "english.news.cn",  # 新华社
+    "stock.10jqka.com.cn", # 同花顺
+    "wap.stockstar.com",   # 证券之星
+    "lokmattimes.com",     # Lokmat Times
+    "cww.net.cn",          # 通信世界
+    "indianweekender.co.nz", # Indian Weekender
+    "x-techcon.com",       # x-techcon
+    "kw.beijing.gov.cn",   # 北京科委
+    "guandian.hk",         # 观点网
 }
 
 # 已知域名黑名单（内容农场、广告站、无关站点）
